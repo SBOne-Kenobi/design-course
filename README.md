@@ -1,1 +1,1 @@
-# Desigh course
+# Design course
