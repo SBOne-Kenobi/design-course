@@ -21,7 +21,20 @@ import com.github.h0tk3y.betterParse.parser.Parser
 import commands.parsed.ParsedCallCommand
 import commands.parsed.ParsedCommand
 
+/**
+ * Class provides parsing [ParsedCommand] from string.
+ */
 object CommandParser {
+
+    /**
+     * Parse [ParsedCommand] from [inputString].
+     *
+     * Brief rules:
+     * - \? - explicitly puts specified char.
+     * - "*" - weak quoting.
+     * - '*' - strong quoting.
+     * - cmd [[args*]] - call command cmd with args
+     */
     fun parse(inputString: String): ParseResult<ParsedCommand> {
         val grammar = CommandGrammar()
         return grammar.tryParseToEnd(inputString)

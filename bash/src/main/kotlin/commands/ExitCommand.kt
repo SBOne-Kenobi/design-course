@@ -4,7 +4,14 @@ import SessionContext
 import java.io.InputStream
 import java.io.OutputStream
 
+/**
+ * Command that forces session terminating.
+ */
 object ExitCommand : Command {
+
+    /**
+     * Set [SessionContext.isRunning] false.
+     */
     override fun execute(
         input: InputStream,
         output: OutputStream,

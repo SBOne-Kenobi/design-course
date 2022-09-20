@@ -1,13 +1,18 @@
 package building
 
 import commands.Command
+import commands.ExitCommand
+import commands.UnknownCommand
 
 class CommandFactory {
 
     private val commandConstructors: Map<String, () -> Command> =
-        TODO("Not initialized!")
+        emptyMap()
 
     fun getCommand(name: String): Command {
-        TODO("Not yet implemented")
+        if (name == "exit") {
+            return ExitCommand
+        }
+        return UnknownCommand(name)
     }
 }
