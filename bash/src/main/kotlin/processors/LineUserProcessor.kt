@@ -3,6 +3,9 @@ package processors
 import SessionContext
 import building.CommandExecutor
 import building.CommandFactory
+import com.github.h0tk3y.betterParse.parser.ErrorResult
+import com.github.h0tk3y.betterParse.parser.ParseResult
+import com.github.h0tk3y.betterParse.parser.Parsed
 import commands.parsed.ParsedCommand
 import commands.parsed.visit
 import java.io.InputStream
@@ -18,7 +21,7 @@ class LineUserProcessor(
 ) : UserProcessor(context) {
     private val inputReader = input.bufferedReader()
 
-    private val commandParser = CommandParser()
+    private val commandParser = CommandParser
     private val commandFactory = CommandFactory()
 
     private fun getExecutor() =
@@ -26,7 +29,10 @@ class LineUserProcessor(
 
     override fun process() {
         val inputLine = inputReader.readLine()
-        val parsedCommand = commandParser.parse(inputLine)
+
+        val parsedCommand = commandParser
+            .parse(inputLine).processParseResult("Parsing commands") ?: return
+
         val exitCode = parsedCommand.execute()
         processExitCode(exitCode)
     }
@@ -35,6 +41,16 @@ class LineUserProcessor(
         val executor = getExecutor()
         executor.visit(this)
         return executor.exitCode
+    }
+
+    private fun <T> ParseResult<T>.processParseResult(name: String): T? = when(this) {
+        is Parsed -> value
+        is ErrorResult -> {
+            error.bufferedWriter().use { writer ->
+                writer.appendLine("Error while $name: $this")
+            }
+            null
+        }
     }
 
     private fun processExitCode(exitCode: Int) {
