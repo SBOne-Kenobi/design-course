@@ -3,8 +3,17 @@ package commands
 import SessionContext
 import java.io.InputStream
 import java.io.OutputStream
+import printStream
+import withValue
 
-object UnknownCommand : Command {
+/**
+ * Command that's not implemented. Trying to call command [name] in subprocess.
+ */
+class UnknownCommand(val name: String) : Command {
+
+    /**
+     * Executes command [name] in subprocess with setting IO and environment.
+     */
     override fun execute(
         input: InputStream,
         output: OutputStream,
@@ -12,6 +21,30 @@ object UnknownCommand : Command {
         context: SessionContext,
         arguments: Array<String>,
     ): Int {
-        TODO("Not yet implemented")
+        System.err.println(arguments.joinToString(" "))
+        return System.`in`.withValue(input, System::setIn) {
+            System.out.withValue(output.printStream(), System::setOut) {
+                System.err.withValue(error.printStream(), System::setErr) {
+                    val processBuilder = ProcessBuilder(name, *arguments)
+                        .directory(context.currentDirectory.toFile())
+                        .redirectInput(ProcessBuilder.Redirect.INHERIT)
+                        .redirectOutput(ProcessBuilder.Redirect.INHERIT)
+                        .redirectError(ProcessBuilder.Redirect.INHERIT)
+                        .setEnvironment(context)
+
+                    val process = processBuilder.start()
+
+                    process.waitFor()
+                }
+            }
+        }
+    }
+
+    private fun ProcessBuilder.setEnvironment(context: SessionContext): ProcessBuilder = apply {
+        environment().apply {
+            context.variables.forEach { (key, value) ->
+                set(key, value)
+            }
+        }
     }
 }

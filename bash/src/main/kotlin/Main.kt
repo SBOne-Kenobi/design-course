@@ -8,16 +8,10 @@ private fun getRunDirectory(): Path =
 
 fun main() {
     val userProcessor = init()
-    loop(userProcessor)
+    userProcessor.loop()
 }
 
-fun init(): UserProcessor {
-    val context = SessionContext(getRunDirectory())
+private fun init(): UserProcessor {
+    val context = SessionContext(getRunDirectory(), System.getenv())
     return LineUserProcessor(context, System.`in`, System.out, System.err)
-}
-
-fun loop(userProcessor: UserProcessor) {
-    while (userProcessor.context.isRunning) {
-        userProcessor.process()
-    }
 }
