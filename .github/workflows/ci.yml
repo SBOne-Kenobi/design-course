@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  collect-changed-projects:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.get_changed.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Collect changed projects
+        id: get_changed
+        uses: Stockopedia/action-get-changed-files@v1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          ignore: "**/*.+(md|yml|github)"
+          foldersOnly: true
+          format: json
+
+      - name: Echo changed projects
+        run: |
+          echo "${{ steps.get_changed.outputs.changed }}"
+
+  build-and-run-tests:
+    needs: [collect-changed-projects]
+    if: needs.collect-changed-projects.outputs.matrix != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        dir: ${{ fromJson(needs.collect-changed-projects.outputs.matrix) }}
+    uses: ./.github/workflows/build-and-run.yml
+    secrets: inherit
+    with:
+      directory: ${{ matrix.dir }}
+
+  after-build:
+    needs: [build-and-run-tests]
+    runs-on: ubuntu-latest
+    if: |
+      always() && 
+      (needs.build-and-run-tests.result == 'success' || needs.build-and-run-tests.result == 'skipped')
+    outputs:
+      success: ${{ steps.setoutput.outputs.success }}
+    steps:
+      - id: setoutput
+        run: echo "::set-output name=success::true"
+
+  ci:
+    needs: [build-and-run-tests, after-build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          passed="${{ needs.after-build.outputs.success }}"
+          if [[ $passed == "true" ]]; then
+            echo "CI passed"
+            exit 0
+          else
+            echo "CI failed"
+            exit 1
+          fi
