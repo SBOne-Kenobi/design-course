@@ -1,6 +1,6 @@
 # Bash design
 
->*NB: <span style="color:green">фаза 1</span> разработки обозначена зеленым цветом, <span style="color:orange">фаза 2</span> разработки обозначена оранжевым цветом.*
+>*NB: :green_circle: фаза 1 разработки обозначена зеленым цветом, :orange_circle: фаза 2 разработки обозначена оранжевым цветом.*
 
 ## Pipeline
 
@@ -8,24 +8,24 @@
 
 1. При запуске программы:
 
-* <span style="color:green">Создается контекст окружения (`SessionContext`), содержащий информацию о переменных и текущей директории</span>
-* <span style="color:green">Определяются потоки ввода и вывода пользователя</span>
-* <span style="color:green">Определяются доступные команды</span>
+* :green_circle: Создается контекст окружения (`SessionContext`), содержащий информацию о переменных и текущей директории
+* :green_circle: Определяются потоки ввода и вывода пользователя
+* :green_circle: Определяются доступные команды
 
 2. При очередном вводе строки (поддержка только однострочного ввода) выполняются следующий шаги:
 
-* <span style="color:orange">Выполняется подстановка (**Substitute**).</span>
+* :orange_circle: Выполняется подстановка (**Substitute**).
 Вход: строка, Выход: строка с подставленными переменными
-* <span style="color:green">Выполняется парсинг команд (**Parse Command**).</span>
+* :green_circle: Выполняется парсинг команд (**Parse Command**).
 Вход: строка, Выход: Структура команд (`ParsedCommand`)
-* <span style="color:green">Из распаршенных команд создаются классы команд (**Build Command**).</span>
+* :green_circle: Из распаршенных команд создаются классы команд (**Build Command**).
 Вход: `ParsedCommand`, Выход: `Command`
-* <span style="color:green">Далее идет запуск команды (**Execute Command**).</span>
+* :green_circle: Далее идет запуск команды (**Execute Command**).
 Вход: `Command`
 
 3. Условие остановки программы: в `SessionContext` флаг `isRunning` выставлен в `false`.
 
-### <span style="color:orange">Substitute</span>
+### :orange_circle: Substitute
 
 Состоит из 2-х компонент:
 
@@ -46,7 +46,7 @@
 * На выходе токены склеиваются в строку
 
 
-### <span style="color:green">Parse Command</span>
+### :green_circle: Parse Command
 
 Состоит из 2-х компонент:
 
@@ -59,17 +59,17 @@
 * `q – s`, подлежащее дальнейшему разбиению
 * Правила формирования токена:
     * Токены цитаты: `“s”`, `‘s’`
-    * <span style="color:orange">Токены комбинирования: `{ q; }`</span>
-    * <span style="color:orange">Токены разделители: `;`</span>
-    * <span style="color:orange">Токены пайпы: `|`</span>
-    * <span style="color:orange">Токены присваивания: `w=n`, `w=”s”`, `w=’s’`</span>
+    * :orange_circle: Токены комбинирования: `{ q; }`
+    * :orange_circle: Токены разделители: `;`
+    * :orange_circle:Токены пайпы: `|`
+    * :orange_circle: Токены присваивания: `w=n`, `w=”s”`, `w=’s’`
     * Остальные токены – `n`, не попавшие в предыдущие токены
 
 2. Парсер (`CommandParser`): интерпретирует токены и строит структуру команд
 
-* Строит структуру команд `ParsedCommand` <span style="color:orange">(используется паттерн *Composite*)</span>, разбивая на группы токенов, которые относятся к командам: команда + аргумент, <span style="color:orange">присваивание</span>
+* Строит структуру команд `ParsedCommand` (:orange_circle: используется паттерн *Composite*), разбивая на группы токенов, которые относятся к командам: команда + аргумент, :orange_circle: присваивание
 
-### <span style="color:green">Build Command</span>
+### :green_circle: Build Command
 
 Основной компонент - фабрика команд `CommandFactory`. Фабрика создает экземпляры команд.
 
@@ -84,7 +84,7 @@
     * Обращается к `commandConstructors` для получения конструктора
     * Если названия команды нет в `commandConstructors`, возвращает экземпляр класса неизвестной команды (`UnknownCommand`)
 
-### <span style="color:green">Execute Command</span>
+### :green_circle: Execute Command
 
 Выполнение команд происходит с помощью паттерна *Visitor* с интерфейсом `CommandBuildVisitor`.
 
@@ -92,8 +92,10 @@
 Важное замечание: внутри `Pipe` контекст передается по значению.
 
 ## Диаграммы
-
 ![Pipeline diagram](./documents/Pipeline.svg "Pipeline")
+---
 ![Command builder diagram](./documents/Command%20Builder.svg "Command builder")
+---
 ![Commands diagram](./documents/Commands.svg "Commands")
+---
 ![Process diagram](./documents/Process.svg "Process")
