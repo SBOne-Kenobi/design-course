@@ -5,10 +5,15 @@ import java.io.InputStream
 import java.io.OutputStream
 
 /**
+ * Class to provide command call name.
+ */
+@Target(AnnotationTarget.CLASS)
+annotation class CommandCallName(val name: String)
+
+/**
  * Interface for command.
  */
 interface Command {
-
     /**
      * Execute command.
      *
@@ -25,5 +30,4 @@ interface Command {
         context: SessionContext,
         arguments: Array<String>
     ): Int
-
 }

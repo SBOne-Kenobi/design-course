@@ -12,6 +12,8 @@ repositories {
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
     implementation 'com.github.h0tk3y.betterParse:better-parse:0.4.4'
+    implementation 'org.reflections:reflections:0.9.9'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
 }
 
 test {
