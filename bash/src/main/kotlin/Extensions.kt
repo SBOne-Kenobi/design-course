@@ -14,3 +14,10 @@ internal inline fun <reified T, reified V> T.withValue(value: T, set: (value: T)
         set(this)
     }
 }
+
+internal fun OutputStream.printException(ex: Throwable) {
+    bufferedWriter().apply {
+        appendLine("Error: $ex")
+        flush()
+    }
+}

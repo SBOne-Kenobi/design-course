@@ -5,10 +5,12 @@ import java.io.InputStream
 import java.io.OutputStream
 
 /**
- * Command that forces session terminating.
+ * 'exit' command implementation.
+ *
+ * Command forces session terminating.
  */
-object ExitCommand : Command {
-
+@CommandCallName("exit")
+class ExitCommand() : Command {
     /**
      * Set [SessionContext.isRunning] false.
      */
