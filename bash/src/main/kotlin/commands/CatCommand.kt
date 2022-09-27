@@ -28,12 +28,7 @@ class CatCommand() : Command {
     ): Int {
         try {
             val file = File(arguments.first())
-            file.forEachLine {
-                output.bufferedWriter().apply {
-                    appendLine(it)
-                    flush()
-                }
-            }
+            file.inputStream().copyTo(output)
             return 0
         } catch (ex: Throwable) {
             error.printException(ex)
