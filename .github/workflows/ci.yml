@@ -20,7 +20,7 @@ jobs:
         uses: Stockopedia/action-get-changed-files@v1.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          ignore: "**/*.+(md|yml|github|svg)"
+          ignore: "**/*+(.md|.yml|.github|.svg|documents)"
           foldersOnly: true
           format: json
 
