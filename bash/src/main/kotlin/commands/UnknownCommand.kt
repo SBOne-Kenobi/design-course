@@ -1,18 +1,17 @@
 package commands
 
 import SessionContext
-import java.io.InputStream
-import java.io.OutputStream
 import printStream
 import withValue
+import java.io.InputStream
+import java.io.OutputStream
 
 /**
- * Command that's not implemented. Trying to call command [name] in subprocess.
+ * Command that's not implemented. Trying to call command [callName] in subprocess.
  */
-class UnknownCommand(val name: String) : Command {
-
+class UnknownCommand(val callName: String) : Command {
     /**
-     * Executes command [name] in subprocess with setting IO and environment.
+     * Executes command [callName] in subprocess with setting IO and environment.
      */
     override fun execute(
         input: InputStream,
@@ -25,7 +24,7 @@ class UnknownCommand(val name: String) : Command {
         return System.`in`.withValue(input, System::setIn) {
             System.out.withValue(output.printStream(), System::setOut) {
                 System.err.withValue(error.printStream(), System::setErr) {
-                    val processBuilder = ProcessBuilder(name, *arguments)
+                    val processBuilder = ProcessBuilder(callName, *arguments)
                         .directory(context.currentDirectory.toFile())
                         .redirectInput(ProcessBuilder.Redirect.INHERIT)
                         .redirectOutput(ProcessBuilder.Redirect.INHERIT)

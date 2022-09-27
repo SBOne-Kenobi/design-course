@@ -1,10 +1,23 @@
 package commands
 
 import SessionContext
+import printException
 import java.io.InputStream
 import java.io.OutputStream
 
-object EchoCommand : Command {
+/**
+ * 'echo' command implementation.
+ *
+ * Command prints out its argument(s).
+ *
+ * Command line usage example:
+ * ```
+ * |> echo 1 2 "hi!"
+ * $ 1 2 hi!
+ * ```
+ */
+@CommandCallName("echo")
+class EchoCommand() : Command {
     override fun execute(
         input: InputStream,
         output: OutputStream,
@@ -12,6 +25,15 @@ object EchoCommand : Command {
         context: SessionContext,
         arguments: Array<String>,
     ): Int {
-        TODO("Not yet implemented")
+        try {
+            output.bufferedWriter().apply {
+                appendLine(arguments.joinToString(" "))
+                flush()
+            }
+            return 0
+        } catch (ex: Throwable) {
+            error.printException(ex)
+        }
+        return 1
     }
 }
