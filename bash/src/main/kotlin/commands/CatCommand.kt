@@ -1,10 +1,11 @@
 package commands
 
 import SessionContext
-import printException
-import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
+import kotlin.io.path.div
+import kotlin.io.path.inputStream
+import printException
 
 /**
  * 'cat' command implementation.
@@ -27,8 +28,8 @@ class CatCommand() : Command {
         arguments: Array<String>
     ): Int {
         try {
-            val file = File(arguments.first())
-            file.inputStream().copyTo(output)
+            val filePath = context.currentDirectory / arguments.first()
+            filePath.inputStream().copyTo(output)
             return 0
         } catch (ex: Throwable) {
             error.printException(ex)

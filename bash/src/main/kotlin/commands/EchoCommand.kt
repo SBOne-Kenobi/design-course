@@ -1,9 +1,9 @@
 package commands
 
 import SessionContext
-import printException
 import java.io.InputStream
 import java.io.OutputStream
+import printException
 
 /**
  * 'echo' command implementation.

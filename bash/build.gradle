@@ -29,14 +29,17 @@ jar {
 }
 
 dependencies {
-    testImplementation 'org.jetbrains.kotlin:kotlin-test'
     implementation 'com.github.h0tk3y.betterParse:better-parse:0.4.4'
-    implementation 'org.reflections:reflections:0.9.9'
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
+    implementation 'org.reflections:reflections:0.10.2'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.10'
+
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.9.0'
 }
 
 application {
-    mainClassName = "MainKt"
+    mainClassName = 'MainKt'
 }
 
 test {
