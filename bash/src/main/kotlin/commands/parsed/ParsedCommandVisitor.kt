@@ -9,6 +9,21 @@ interface ParsedCommandVisitor {
      * Process [ParsedCallCommand].
      */
     fun visitCall(cmd: ParsedCallCommand)
+
+    /**
+     * Process [ParsedSetVariableCommand].
+     */
+    fun visitSetVar(cmd: ParsedSetVariableCommand)
+
+    /**
+     * Process [ParsedCommandPipe].
+     */
+    fun visitPipe(cmd: ParsedCommandPipe)
+
+    /**
+     * Process [ParsedCommandSequence].
+     */
+    fun visitSequence(cmd: ParsedCommandSequence)
 }
 
 /**

@@ -4,7 +4,10 @@ import SessionContext
 import commands.Command
 import commands.parsed.ParsedCommand
 import commands.parsed.ParsedCallCommand
+import commands.parsed.ParsedCommandPipe
+import commands.parsed.ParsedCommandSequence
 import commands.parsed.ParsedCommandVisitor
+import commands.parsed.ParsedSetVariableCommand
 import java.io.InputStream
 import java.io.OutputStream
 import kotlin.properties.Delegates
@@ -34,5 +37,17 @@ class CommandExecutor(
     override fun visitCall(cmd: ParsedCallCommand) {
         val command = commandFactory.getCommand(cmd.command)
         exitCode = command.execute(input, output, error, context, cmd.arguments.toTypedArray())
+    }
+
+    override fun visitSetVar(cmd: ParsedSetVariableCommand) {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitPipe(cmd: ParsedCommandPipe) {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitSequence(cmd: ParsedCommandSequence) {
+        TODO("Not yet implemented")
     }
 }

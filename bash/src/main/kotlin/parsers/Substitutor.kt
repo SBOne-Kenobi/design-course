@@ -17,8 +17,20 @@ import com.github.h0tk3y.betterParse.lexer.regexToken
 import com.github.h0tk3y.betterParse.parser.ParseResult
 import com.github.h0tk3y.betterParse.parser.Parser
 
+/**
+ * Class provides replacing variables with their values.
+ */
 object Substitutor {
 
+    /**
+     * Replace variables.
+     *
+     * Brief rules:
+     * - \? - explicitly puts specified char.
+     * - "*" - weak quoting.
+     * - '*' - strong quoting.
+     * - $w, ${w} - substitute value of variable `w`.
+     */
     fun parse(context: SessionContext, inputString: String): ParseResult<String> {
         val grammar = SubstitutionGrammar(context)
         return grammar.tryParseToEnd(inputString)
