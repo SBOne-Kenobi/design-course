@@ -12,6 +12,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.io.Reader
 import parsers.CommandParser
+import parsers.Substitutor
 import printStream
 
 class LineUserProcessor(
@@ -25,6 +26,7 @@ class LineUserProcessor(
     private val errorPrint = error.printStream()
 
     private val commandParser = CommandParser
+    private val substitutor = Substitutor
     private val commandFactory = CommandFactory()
 
     private fun getExecutor() =
@@ -34,8 +36,11 @@ class LineUserProcessor(
         outputPrint.append("|> ")
         val inputLine = inputReader.readLine()
 
+        val substituted = substitutor
+            .parse(context, inputLine).processParseResult("Substitution") ?: return
+
         val parsedCommand = commandParser
-            .parse(inputLine).processParseResult("Parsing commands") ?: return
+            .parse(substituted).processParseResult("Parsing commands") ?: return
 
         try {
             val exitCode = parsedCommand.execute()
