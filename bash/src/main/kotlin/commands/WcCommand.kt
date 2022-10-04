@@ -3,10 +3,8 @@ package commands
 import SessionContext
 import java.io.InputStream
 import java.io.OutputStream
-import kotlin.io.path.div
-import kotlin.io.path.fileSize
-import kotlin.io.path.forEachLine
 import printException
+import kotlin.io.path.*
 
 /**
  * 'wc' command implementation.
@@ -29,16 +27,20 @@ class WcCommand() : Command {
         arguments: Array<String>,
     ): Int {
         try {
-            val filePath = context.currentDirectory / arguments.first()
-            val bytes = filePath.fileSize()
+            val targetInput = if (arguments.isEmpty()) {
+                input.readBytes()
+            } else {
+                (context.currentDirectory / arguments.first()).readBytes()
+            }
+            val bytes = targetInput.size
             var words = 0
             var lines = 0
-            filePath.forEachLine {
+            targetInput.decodeToString().lineSequence().forEach {
                 lines += 1
                 words += it.split(" ").filter { word -> word.isNotEmpty() }.size
             }
             output.bufferedWriter().apply {
-                appendLine("\t$lines\t$words\t$bytes")
+                append("\t$lines\t$words\t$bytes")
                 flush()
             }
             return 0

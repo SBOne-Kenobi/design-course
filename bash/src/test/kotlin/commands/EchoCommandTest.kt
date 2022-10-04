@@ -22,7 +22,7 @@ class EchoCommandTest : BaseCommandTest() {
     @MethodSource("argumentsProvider")
     fun testEchoCommand(arguments: Array<String>) {
         assertEquals(0, cmd.execute(*arguments))
-        assertEquals(arguments.joinToString(" ", postfix = "\n"), output.toByteArray().decodeToString())
+        assertEquals(arguments.joinToString(" "), output.toByteArray().decodeToString())
         assert(error.toByteArray().isEmpty())
     }
 

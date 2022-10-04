@@ -2,12 +2,9 @@ package building
 
 import SessionContext
 import commands.Command
-import commands.parsed.ParsedCommand
-import commands.parsed.ParsedCallCommand
-import commands.parsed.ParsedCommandPipe
-import commands.parsed.ParsedCommandSequence
-import commands.parsed.ParsedCommandVisitor
-import commands.parsed.ParsedSetVariableCommand
+import commands.parsed.*
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import kotlin.properties.Delegates
@@ -40,14 +37,32 @@ class CommandExecutor(
     }
 
     override fun visitSetVar(cmd: ParsedSetVariableCommand) {
-        TODO("Not yet implemented")
+        context.variables[cmd.name] = cmd.value
+        exitCode = 0
     }
 
     override fun visitPipe(cmd: ParsedCommandPipe) {
-        TODO("Not yet implemented")
+        val resultInput = cmd.commands.fold(input) { curInput, curCmd ->
+            val contextCopy = context.copy(
+                variables = context.variables.toMutableMap()
+            )
+            val curOutput = ByteArrayOutputStream()
+
+            val executor = CommandExecutor(commandFactory, curInput, curOutput, error, contextCopy)
+            executor.visit(curCmd)
+            exitCode = executor.exitCode
+
+            ByteArrayInputStream(curOutput.toByteArray())
+        }
+        resultInput.copyTo(output)
     }
 
     override fun visitSequence(cmd: ParsedCommandSequence) {
-        TODO("Not yet implemented")
+        cmd.commands.forEach {
+            visit(it)
+            if (exitCode != 0 || !context.isRunning) {
+                return
+            }
+        }
     }
 }

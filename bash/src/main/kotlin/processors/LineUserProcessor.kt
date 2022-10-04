@@ -50,6 +50,7 @@ class LineUserProcessor(
         }
         Thread.sleep(100) // wait for error stream
         errorPrint.flush()
+        outputPrint.println()
     }
 
     private fun ParsedCommand.execute(): Int {

@@ -28,8 +28,12 @@ class CatCommand() : Command {
         arguments: Array<String>
     ): Int {
         try {
-            val filePath = context.currentDirectory / arguments.first()
-            filePath.inputStream().copyTo(output)
+            val targetInput = if (arguments.isEmpty()) {
+                input
+            } else {
+                (context.currentDirectory / arguments.first()).inputStream()
+            }
+            targetInput.copyTo(output)
             return 0
         } catch (ex: Throwable) {
             error.printException(ex)

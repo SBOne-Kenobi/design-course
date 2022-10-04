@@ -27,7 +27,7 @@ class EchoCommand() : Command {
     ): Int {
         try {
             output.bufferedWriter().apply {
-                appendLine(arguments.joinToString(" "))
+                append(arguments.joinToString(" "))
                 flush()
             }
             return 0

@@ -18,7 +18,7 @@ class PwdCommandTest : BaseCommandTest() {
     fun testPwd() {
         assertEquals(0, cmd.execute())
         assertEquals(
-            sessionContext.currentDirectory.absolutePathString() + "\n",
+            sessionContext.currentDirectory.absolutePathString(),
             output.toByteArray().decodeToString()
         )
     }
