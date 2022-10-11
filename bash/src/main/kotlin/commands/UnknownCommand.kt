@@ -20,7 +20,6 @@ class UnknownCommand(val callName: String) : Command {
         context: SessionContext,
         arguments: Array<String>,
     ): Int {
-        System.err.println(arguments.joinToString(" "))
         return System.`in`.withValue(input, System::setIn) {
             System.out.withValue(output.printStream(), System::setOut) {
                 System.err.withValue(error.printStream(), System::setErr) {

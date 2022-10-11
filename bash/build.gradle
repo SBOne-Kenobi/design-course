@@ -33,6 +33,7 @@ dependencies {
     implementation 'com.github.h0tk3y.betterParse:better-parse:0.4.4'
     implementation 'org.reflections:reflections:0.10.2'
     implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.10'
+    implementation 'com.xenomachina:kotlin-argparser:2.0.7'
 
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
