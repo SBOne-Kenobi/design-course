@@ -92,10 +92,6 @@
 Важное замечание: внутри `Pipe` контекст передается по значению.
 
 ## Диаграммы
-![Pipeline diagram](./documents/Pipeline.svg "Pipeline")
+![Pipeline diagram](../documents/Pipeline.svg "Pipeline")
 ---
-![Command builder diagram](./documents/Command%20Builder.svg "Command builder")
----
-![Commands diagram](./documents/Commands.svg "Commands")
----
-![Process diagram](./documents/Process.svg "Process")
+![Class diagram](../documents/bash.svg "Class diagram")
