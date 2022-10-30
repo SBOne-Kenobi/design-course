@@ -20,6 +20,9 @@ import com.github.h0tk3y.betterParse.parser.ParseResult
 import com.github.h0tk3y.betterParse.parser.Parser
 import commands.parsed.ParsedCallCommand
 import commands.parsed.ParsedCommand
+import commands.parsed.ParsedCommandPipe
+import commands.parsed.ParsedCommandSequence
+import commands.parsed.ParsedSetVariableCommand
 
 /**
  * Class provides parsing [ParsedCommand] from string.
@@ -30,10 +33,13 @@ object CommandParser {
      * Parse [ParsedCommand] from [inputString].
      *
      * Brief rules:
-     * - \? - explicitly puts specified char.
-     * - "*" - weak quoting.
-     * - '*' - strong quoting.
+     * - \? - explicitly puts specified char
+     * - "*" - weak quoting
+     * - '*' - strong quoting
+     * - { q; } - command sequence
+     * - a | b - command pipe
      * - cmd [[args*]] - call command cmd with args
+     * - w=n, w="s", w='s' - equation
      */
     fun parse(inputString: String): ParseResult<ParsedCommand> {
         val grammar = CommandGrammar()
@@ -44,7 +50,7 @@ object CommandParser {
 
         // Special characters
         private val specialChars = """
-            "'\
+            "'\=|;{}
         """.trimIndent()
         private val spRegex = specialChars.replace("\\", "\\\\")
 
@@ -55,6 +61,11 @@ object CommandParser {
         private val inplaceChar by regexToken("\\\\.")
         private val weakQuote by literalToken("\"")
         private val strongQuote by literalToken("'")
+        private val eq by literalToken("=")
+        private val pipe by literalToken("|")
+        private val seq by literalToken(";")
+        private val beginSeq by literalToken("{")
+        private val endSeq by literalToken("}")
         private val separator by regexToken("\\s+")
         private val nonSpec by regexToken("[^\\s$spRegex]+")
         @Suppress("UNUSED") private val any by regexToken(".*")
@@ -88,8 +99,35 @@ object CommandParser {
                 ParsedCallCommand(cmd, args ?: emptyList())
             }
 
+        private val equalityParser by
+            nonSpec * -eq * wordTerm map { (name, value) ->
+                ParsedSetVariableCommand(name.text, value)
+            }
+
+        private val nodeCommandParser by
+            equalityParser or callCommandParser
+
+        private val sequenceCommandParser by
+            parser(::sequenceParser) map { commands ->
+                ParsedCommandSequence(commands)
+            }
+
+        private val surroundedSequenceParser by
+            (-beginSeq * -separator * parser {
+                sequenceParser(checkLastSeq = false)
+            } * -seq * -separator * -endSeq) map { commands ->
+                ParsedCommandSequence(commands)
+            }
+
+        private val pipeCommandParser by
+            parser(::pipeParser) map { commands ->
+                ParsedCommandPipe(commands)
+            }
+
         override val rootParser by
-            -optional(separator) * callCommandParser * -optional(separator)
+            -optional(separator) * (
+                sequenceCommandParser or pipeCommandParser or surroundedSequenceParser or nodeCommandParser
+            ) * -optional(separator)
 
         private fun allTokensExcept(vararg exceptTokens: Token): Parser<String> =
             tokens
@@ -108,6 +146,27 @@ object CommandParser {
         private fun strongQuotingParser(): Parser<String> {
             val defaultTokens = allTokensExcept(strongQuote, inplaceStrongQuote)
             return zeroOrMore(defaultTokens) use { joinToString("") }
+        }
+
+        private fun sequenceParser(checkLastSeq: Boolean = true): Parser<List<ParsedCommand>> {
+            val cmd = pipeCommandParser or nodeCommandParser
+            val sep = seq * optional(separator)
+            val main = cmd * -sep * separatedTerms(cmd, sep, acceptZero = true) map { (first, other) ->
+                listOf(first) + other
+            }
+            return if (checkLastSeq) {
+                main * -optional(seq)
+            } else {
+                main
+            }
+        }
+
+        private fun pipeParser(): Parser<List<ParsedCommand>> {
+            val cmd = surroundedSequenceParser or nodeCommandParser
+            val sep = optional(separator) * pipe * optional(separator)
+            return cmd * -sep * separatedTerms(cmd, sep) map { (first, other) ->
+                listOf(first) + other
+            }
         }
 
     }

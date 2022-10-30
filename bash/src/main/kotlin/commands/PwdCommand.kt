@@ -28,7 +28,7 @@ class PwdCommand() : Command {
     ): Int {
         try {
             output.bufferedWriter().apply {
-                appendLine(context.currentDirectory.absolutePathString())
+                append(context.currentDirectory.absolutePathString())
                 flush()
             }
             return 0

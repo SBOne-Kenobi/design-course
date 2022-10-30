@@ -27,7 +27,7 @@ class WcCommandTest : BaseCommandTest() {
         val size = filePath.fileSize()
         val words = filePath.readText().split("\\s+".toRegex()).size
         val lines = filePath.readLines().size
-        assertEquals("\t$lines\t$words\t$size\n", output.toByteArray().decodeToString())
+        assertEquals("\t$lines\t$words\t$size", output.toByteArray().decodeToString())
     }
 
 }

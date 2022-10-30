@@ -12,6 +12,6 @@ fun main() {
 }
 
 private fun init(): UserProcessor {
-    val context = SessionContext(getRunDirectory(), System.getenv())
+    val context = SessionContext(getRunDirectory(), System.getenv().toMutableMap())
     return LineUserProcessor(context, System.`in`, System.out, System.err)
 }
