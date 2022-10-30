@@ -153,6 +153,7 @@ class CommandParserTest {
         assertVisitor.visit(expected)
     }
 
+
     companion object {
         @JvmStatic
         fun callCommandProvider(): Stream<Arguments> = Stream.of(
