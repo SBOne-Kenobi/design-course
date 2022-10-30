@@ -34,7 +34,14 @@ class LineUserProcessor(
 
     override fun process() {
         outputPrint.append("|> ")
-        val inputLine = inputReader.readLine()
+        val inputLine: String? = inputReader.readLine()
+        if (inputLine == null) {
+            context.isRunning = false
+            return
+        }
+        if (inputLine.isBlank()) {
+            return
+        }
 
         val substituted = substitutor
             .parse(context, inputLine).processParseResult("Substitution") ?: return
