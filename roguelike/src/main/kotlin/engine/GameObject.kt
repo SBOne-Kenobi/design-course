@@ -2,30 +2,20 @@ package engine
 
 open class GameObject(
     val id: Int,
-    val position: Position,
+    var position: Position,
     val shape: Shape = EmptyShape,
     val isSolid: Boolean = true,
-    var parent: GameObject? = null
 ) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is GameObject) return false
 
-    private val childrenData: MutableMap<Int, GameObject> = HashMap()
+        if (id != other.id) return false
 
-    val children: List<GameObject>
-        get() = childrenData.values.toList()
-
-    fun addChild(child: GameObject) {
-        childrenData.putIfAbsent(child.id, child)
+        return true
     }
 
-    fun removeChild(childId: Int): GameObject? =
-        childrenData.remove(childId)
-
-    fun accept(visitor: GameObjectVisitor) {
-        visitor.visitObject(this)
+    override fun hashCode(): Int {
+        return id
     }
-
-}
-
-interface GameObjectVisitor {
-    fun visitObject(obj: GameObject)
 }
