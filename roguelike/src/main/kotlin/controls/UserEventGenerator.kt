@@ -1,5 +1,7 @@
 package controls
 
+import kotlinx.coroutines.flow.Flow
+
 interface UserEventGenerator {
-    // TODO
+    val eventFlow: Flow<UserEvent>
 }

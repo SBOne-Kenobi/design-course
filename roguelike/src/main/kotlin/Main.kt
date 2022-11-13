@@ -1,7 +1,23 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+import com.varabyte.kotter.foundation.session
+import com.varabyte.kotter.terminal.virtual.TerminalSize
+import com.varabyte.kotter.terminal.virtual.VirtualTerminal
+import java.awt.Frame
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+fun main() {
+    val terminal = VirtualTerminal.create(
+        title = "Test",
+        terminalSize = TerminalSize(width = 100, height = 20),
+    )
+
+    Frame.getFrames().single().apply {
+        isResizable = false
+    }
+
+    session(terminal) {
+        section {
+            // Render
+        }.run {
+            // Logic
+        }
+    }
 }
