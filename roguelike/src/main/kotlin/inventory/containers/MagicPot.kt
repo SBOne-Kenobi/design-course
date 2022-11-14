@@ -1,24 +1,15 @@
 package inventory.containers
 
+import inventory.grimoire.ItemRecipe
 import inventory.items.Item
 
-class MagicPot : ItemsContainer {
-    override val items: List<Item>
-        get() = TODO("Not yet implemented")
+class MagicPot : DefaultContainer() {
+    fun applyRecipe(recipe: ItemRecipe): Item? {
+        if (!recipe.isAppliable(itemsToCountData)) return null
 
-    override fun getCurrentItem(): Item {
-        TODO("Not yet implemented")
-    }
-
-    override fun resetCurrentItem() {
-        TODO("Not yet implemented")
-    }
-
-    override fun setNextItem(): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun setPrevItem(): Boolean {
-        TODO("Not yet implemented")
+        recipe.ingredients.forEach { (item, count) ->
+            removeItem(item, count)
+        }
+        return recipe.resultingItem
     }
 }

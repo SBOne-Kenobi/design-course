@@ -1,46 +1,51 @@
 package inventory.containers
 
-import inventory.items.EmptyItem
 import inventory.items.EquipmentType
 import inventory.items.Item
 
-class UserEquipment : ItemsContainer {
-    private var currentPosition: Int = minPriority
+class UserEquipment : MutableItemsContainer {
+    private val equipment: MutableMap<Int, Item?> =
+        (minPriority..maxPriority).associateWith { null }.toMutableMap()
 
-    private val equipment: MutableMap<Int, Item> =
-        (minPriority..maxPriority).associateWith { EmptyItem }.toMutableMap()
-
-    override val items: List<Item>
-        get() = equipment.values.toList()
-
-    fun setEquipment(type: EquipmentType, item: Item): Item {
-        require(type.priority in minPriority..maxPriority)
-        require(item.equipmentType == EquipmentType.Any || type == item.equipmentType)
-        return equipment.put(type.priority, item)!!
+    override fun getItemAmount(item: Item): Int {
+        return when (item.equipmentType) {
+            EquipmentType.None -> 0
+            EquipmentType.Any -> 0
+            else -> {
+                val curItem = equipment[item.equipmentType.priority]
+                if (item == curItem) 1 else 0
+            }
+        }
     }
 
-    override fun getCurrentItem(): Item =
-        equipment[currentPosition]!!
+    override fun getItemsList(): List<Item> = equipment.values.filterNotNull()
 
-    override fun resetCurrentItem() {
-        currentPosition = minPriority
+    override fun addItem(item: Item, count: Int): Item? {
+        val priority = item.equipmentType.priority
+
+        require(priority in minPriority..maxPriority)
+        require(count == 1)
+
+        return equipment.put(priority, item)
     }
 
-    override fun setNextItem(): Boolean =
-        if (currentPosition < maxPriority) {
-            ++currentPosition
-            true
-        } else {
-            false
+    override fun removeItem(item: Item, count: Int): Boolean {
+        val priority = item.equipmentType.priority
+
+        require(priority in minPriority..maxPriority)
+        require(count == 1)
+
+        if (equipment[priority] == item) {
+            equipment[priority] = null
+            return true
         }
 
-    override fun setPrevItem(): Boolean =
-        if (currentPosition > 0) {
-            --currentPosition
-            true
-        } else {
-            false
-        }
+        return false
+    }
+
+    override fun removeAllEntriesOfItem(item: Item) {
+        removeItem(item, 1)
+    }
 
     companion object {
         private const val minPriority: Int = 1

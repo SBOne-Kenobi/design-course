@@ -3,11 +3,9 @@ package inventory.containers
 import inventory.items.Item
 
 interface MutableItemsContainer : ItemsContainer {
-    fun addItem(item: Item, index: Int? = null)
+    fun addItem(item: Item, count: Int = 1): Item?
 
-    fun addItemAfterCurrent(item: Item)
+    fun removeItem(item: Item, count: Int = 1): Boolean
 
-    fun removeItem(index: Int? = null)
-
-    fun removeCurrentItem()
+    fun removeAllEntriesOfItem(item: Item)
 }

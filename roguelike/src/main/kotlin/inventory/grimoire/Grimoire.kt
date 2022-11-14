@@ -1,8 +1,8 @@
 package inventory.grimoire
 
-class Grimoire {
-    // TODO
+import inventory.items.Item
 
-    val recipes: List<ItemRecipe>
-        get() = TODO()
+data class Grimoire(val recipes: MutableList<ItemRecipe> = mutableListOf()) {
+    fun getAppliableRecipes(availableIngredients: Map<Item, Int>): List<ItemRecipe> =
+        recipes.filter { it.isAppliable(availableIngredients) }
 }
