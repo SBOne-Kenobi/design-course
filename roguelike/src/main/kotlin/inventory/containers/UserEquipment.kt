@@ -1,11 +1,12 @@
 package inventory.containers
 
+import inventory.items.EmptyItem
 import inventory.items.EquipmentType
 import inventory.items.Item
 
 class UserEquipment : MutableItemsContainer {
-    private val equipment: MutableMap<Int, Item?> =
-        (minPriority..maxPriority).associateWith { null }.toMutableMap()
+    private val equipment: MutableMap<Int, Item> =
+        (minPriority..maxPriority).associateWith { EmptyItem }.toMutableMap()
 
     override fun getItemAmount(item: Item): Int {
         return when (item.equipmentType) {
@@ -18,15 +19,15 @@ class UserEquipment : MutableItemsContainer {
         }
     }
 
-    override fun getItemsList(): List<Item> = equipment.values.filterNotNull()
+    override fun getItemsList(): List<Item> = equipment.values.filterNot { it is EmptyItem }
 
-    override fun addItem(item: Item, count: Int): Item? {
+    override fun addItem(item: Item, count: Int): Item {
         val priority = item.equipmentType.priority
 
         require(priority in minPriority..maxPriority)
         require(count == 1)
 
-        return equipment.put(priority, item)
+        return equipment.put(priority, item) ?: EmptyItem
     }
 
     override fun removeItem(item: Item, count: Int): Boolean {
@@ -36,7 +37,7 @@ class UserEquipment : MutableItemsContainer {
         require(count == 1)
 
         if (equipment[priority] == item) {
-            equipment[priority] = null
+            equipment[priority] = EmptyItem
             return true
         }
 
