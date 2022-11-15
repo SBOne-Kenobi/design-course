@@ -1,43 +1,38 @@
 package inventory.containers
 
-import inventory.items.EmptyItem
 import inventory.items.EquipmentType
 import inventory.items.Item
 
 class UserEquipment : MutableItemsContainer {
-    private val equipment: MutableMap<Int, Item> =
-        (minPriority..maxPriority).associateWith { EmptyItem }.toMutableMap()
+    private val equipment: MutableMap<EquipmentType, Item> = mutableMapOf()
 
     override fun getItemAmount(item: Item): Int {
-        return when (item.equipmentType) {
-            EquipmentType.None -> 0
-            EquipmentType.Any -> 0
-            else -> {
-                val curItem = equipment[item.equipmentType.priority]
-                if (item == curItem) 1 else 0
-            }
-        }
+        val curItem = getEquipment(item.equipmentType)
+        return if (item == curItem) 1 else 0
     }
 
-    override fun getItemsList(): List<Item> = equipment.values.filterNot { it is EmptyItem }
+    fun getEquipment(equipmentType: EquipmentType): Item? =
+        equipment[equipmentType]
 
-    override fun addItem(item: Item, count: Int): Item {
-        val priority = item.equipmentType.priority
+    override fun getItemsList(): List<Item> = equipment.values.toList()
 
-        require(priority in minPriority..maxPriority)
+    override fun addItem(item: Item, count: Int): Item? {
+        val type = item.equipmentType
+
+        require(type != EquipmentType.None)
         require(count == 1)
 
-        return equipment.put(priority, item) ?: EmptyItem
+        return equipment.put(type, item)
     }
 
     override fun removeItem(item: Item, count: Int): Boolean {
-        val priority = item.equipmentType.priority
+        val type = item.equipmentType
 
-        require(priority in minPriority..maxPriority)
+        require(type != EquipmentType.None)
         require(count == 1)
 
-        if (equipment[priority] == item) {
-            equipment[priority] = EmptyItem
+        if (equipment[type] == item) {
+            equipment.remove(type)
             return true
         }
 
@@ -46,10 +41,5 @@ class UserEquipment : MutableItemsContainer {
 
     override fun removeAllEntriesOfItem(item: Item) {
         removeItem(item, 1)
-    }
-
-    companion object {
-        private const val minPriority: Int = 1
-        private const val maxPriority: Int = 5
     }
 }

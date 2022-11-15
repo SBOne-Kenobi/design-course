@@ -7,5 +7,4 @@ enum class EquipmentType(val priority: Int) {
     Arms(3),
     Weapon(4),
     Legs(5),
-    Any(6),
 }
