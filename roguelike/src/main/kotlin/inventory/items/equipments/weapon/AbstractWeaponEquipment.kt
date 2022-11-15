@@ -1,8 +1,8 @@
 package inventory.items.equipments.weapon
 
 import inventory.items.EquipmentType
-import inventory.items.Item
+import inventory.items.equipments.AbstractEquipment
 
-abstract class AbstractWeaponEquipment : Item {
+abstract class AbstractWeaponEquipment : AbstractEquipment() {
     override val equipmentType: EquipmentType = EquipmentType.Weapon
 }

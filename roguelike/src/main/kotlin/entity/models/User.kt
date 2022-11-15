@@ -10,7 +10,7 @@ class User(
     gameObject: GameObject,
     characteristics: Characteristics,
 ) : EntityWithCharacteristics(gameObject, characteristics), UserEventListener {
-    val inventory: UserInventory = TODO()
+    val inventory: UserInventory = UserInventory()
 
     override fun onEvent(event: UserEvent) {
         TODO("Not yet implemented")
