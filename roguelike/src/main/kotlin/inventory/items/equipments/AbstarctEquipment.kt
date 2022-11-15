@@ -3,19 +3,19 @@ package inventory.items.equipments
 import inventory.items.Item
 
 abstract class AbstractEquipment : Item {
-    open val healthBonus: Double = 0.0
-    open val attackBonus: Double = 0.0
-    open val protectionBonus: Double = 0.0
+    open val healthPointsBonus: Int = 0
+    open val attackPointsBonus: Int = 0
+    open val protectionPointsBonus: Int = 0
 
     fun bonusesToString(): String = buildString {
-        if (healthBonus > 0) {
-            appendLine("$healthBonus% to health.")
+        if (healthPointsBonus > 0) {
+            appendLine("+$healthPointsBonus points to health.")
         }
-        if (attackBonus > 0) {
-            appendLine("$attackBonus% to attack.")
+        if (attackPointsBonus > 0) {
+            appendLine("+$attackPointsBonus points to attack.")
         }
-        if (protectionBonus > 0) {
-            appendLine("$protectionBonus% to protection.")
+        if (protectionPointsBonus > 0) {
+            appendLine("+$protectionPointsBonus points to protection.")
         }
     }
 }
