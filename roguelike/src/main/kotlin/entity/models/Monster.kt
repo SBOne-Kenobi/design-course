@@ -11,4 +11,7 @@ class Monster(
     val type: MonsterType,
 ) : EntityWithCharacteristics(gameObject, characteristics) {
     val items: DefaultContainer = TODO()
+    override fun onDeath() {
+        TODO("Not yet implemented")
+    }
 }

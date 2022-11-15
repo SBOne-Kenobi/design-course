@@ -15,7 +15,7 @@ object EmptyShape : Shape {
         false
 }
 
-data class RectShape(val width: Int, val height: Int, val origin: Position) : Shape {
+data class RectShape(val width: Int = 1, val height: Int = 1, val origin: Position = Position(x = 0, y = 0)) : Shape {
     override fun isIntersected(position: Position, otherShape: Shape, otherPosition: Position): Boolean =
         when (otherShape) {
             EmptyShape -> false

@@ -2,13 +2,12 @@ package entity
 
 class GameController {
 
-    var state: GameState = TODO()
+    var state: GameState? = null
         private set
 
-    var currentLevel: Level = TODO()
-        private set
+    var currentLevel: Level = Level()
 
-    val map: GameMap = TODO()
+    var map: GameMap? = null
 
     fun tick() {
         TODO()
