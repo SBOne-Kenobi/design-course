@@ -1,4 +1,4 @@
-package ui.inventory.items
+package ui.inventory.items.renderers
 
 import inventory.items.Item
 import ui.ConsoleRenderer

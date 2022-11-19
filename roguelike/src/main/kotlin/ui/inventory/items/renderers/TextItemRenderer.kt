@@ -1,4 +1,4 @@
-package ui.inventory.items
+package ui.inventory.items.renderers
 
 import com.varabyte.kotter.foundation.text.text
 import com.varabyte.kotter.runtime.render.RenderScope

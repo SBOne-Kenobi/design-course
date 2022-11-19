@@ -1,11 +1,12 @@
-package ui.inventory.containers
+package ui.inventory.containers.renderers
 
 import com.varabyte.kotter.foundation.text.textLine
 import com.varabyte.kotter.runtime.render.RenderScope
 import inventory.containers.DefaultContainer
 import inventory.items.Item
+import ui.inventory.containers.ContainerWithNavigation
 import ui.inventory.items.ItemRenderStrategy
-import ui.inventory.items.ItemWithAmountRenderer
+import ui.inventory.items.renderers.ItemWithAmountRenderer
 
 class DefaultContainerRenderer(
     maxWidth: Int,

@@ -1,10 +1,11 @@
-package ui.inventory.containers
+package ui.inventory.containers.renderers
 
 import inventory.containers.ItemsContainer
 import ui.ConsoleRenderer
+import ui.inventory.containers.ContainerWithNavigation
 import ui.inventory.items.ItemRenderStrategy
-import ui.inventory.items.ItemRenderer
-import ui.inventory.items.SelectedItemRenderer
+import ui.inventory.items.renderers.ItemRenderer
+import ui.inventory.items.renderers.SelectedItemRenderer
 
 abstract class ItemsContainerRenderer<in T : ItemsContainer>(
     var maxWidth: Int,

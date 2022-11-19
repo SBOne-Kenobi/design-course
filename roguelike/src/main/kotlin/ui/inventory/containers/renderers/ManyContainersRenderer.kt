@@ -1,4 +1,4 @@
-package ui.inventory.containers
+package ui.inventory.containers.renderers
 
 import com.varabyte.kotter.foundation.render.OffscreenCommandRenderer
 import com.varabyte.kotter.foundation.render.offscreen
@@ -8,9 +8,13 @@ import com.varabyte.kotter.runtime.render.RenderScope
 import inventory.containers.ItemsContainer
 import inventory.items.Item
 import ui.ConsoleRenderer
+import ui.calculateViewPosition
+import ui.inventory.containers.ContainerRendererFactory
+import ui.inventory.containers.ContainerWithNavigation
+import ui.inventory.containers.ManyContainersWithNavigation
 import ui.inventory.items.ItemRenderStrategy
-import ui.inventory.items.ItemRenderer
-import ui.inventory.items.TextItemRenderer
+import ui.inventory.items.renderers.ItemRenderer
+import ui.inventory.items.renderers.TextItemRenderer
 
 class ManyContainersRenderer(
     var maxWidth: Int,
@@ -41,15 +45,6 @@ class ManyContainersRenderer(
         }
     }
 
-    private fun calculateBeginPosition(beginPosition: Int, currentPosition: Int, height: Int) =
-        if (currentPosition in beginPosition until beginPosition + height) {
-            beginPosition
-        } else if (currentPosition < beginPosition) {
-            currentPosition
-        } else {
-            currentPosition + 1 - height
-        }
-
     private fun RenderScope.renderEach(
         renderers: List<Pair<OffscreenCommandRenderer, Int>>,
         delimChar: Char,
@@ -77,7 +72,7 @@ class ManyContainersRenderer(
             remainingContentWidth -= currentWidth
             remainingContainers -= 1
 
-            containerWithNavigation.currentBeginPosition = calculateBeginPosition(
+            containerWithNavigation.currentBeginPosition = calculateViewPosition(
                 containerWithNavigation.currentBeginPosition,
                 containerWithNavigation.currentItemPosition,
                 contentHeight

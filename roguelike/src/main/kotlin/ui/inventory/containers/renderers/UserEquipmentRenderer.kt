@@ -1,4 +1,4 @@
-package ui.inventory.containers
+package ui.inventory.containers.renderers
 
 import com.varabyte.kotter.foundation.text.green
 import com.varabyte.kotter.foundation.text.text
@@ -7,6 +7,7 @@ import com.varabyte.kotter.foundation.text.yellow
 import com.varabyte.kotter.runtime.render.RenderScope
 import inventory.containers.UserEquipment
 import inventory.items.EquipmentType
+import ui.inventory.containers.ContainerWithNavigation
 import ui.inventory.extend
 import ui.inventory.items.ItemRenderStrategy
 

@@ -1,10 +1,11 @@
-package ui.inventory.items
+package ui.inventory.items.renderers
 
 import com.varabyte.kotter.foundation.text.green
 import com.varabyte.kotter.foundation.text.text
 import com.varabyte.kotter.foundation.text.yellow
 import com.varabyte.kotter.runtime.render.RenderScope
 import inventory.items.Item
+import ui.inventory.items.ItemRendererWrapper
 
 class SelectedItemRenderer(
     var isActive: Boolean,

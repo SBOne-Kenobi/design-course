@@ -5,6 +5,9 @@ import inventory.containers.DefaultContainer
 import inventory.containers.ItemsContainer
 import inventory.containers.UserEquipment
 import ui.ConsoleRenderer
+import ui.inventory.containers.renderers.DefaultContainerRenderer
+import ui.inventory.containers.renderers.ItemsContainerRenderer
+import ui.inventory.containers.renderers.UserEquipmentRenderer
 import ui.inventory.items.ItemRenderStrategy
 
 class ContainerRendererFactory {

@@ -4,6 +4,7 @@ import com.varabyte.kotter.foundation.runUntilSignal
 import com.varabyte.kotter.foundation.session
 import com.varabyte.kotter.terminal.virtual.TerminalSize
 import com.varabyte.kotter.terminal.virtual.VirtualTerminal
+import engine.Position
 import entity.GameController
 import entity.GameMap
 import entity.GameState
@@ -63,30 +64,51 @@ fun main() {
                 val currentNav = navigation.containers[navigation.currentContainerPosition]
                 when (key) {
                     Keys.LEFT -> {
-                        navigation.currentContainerPosition =
-                            (navigation.currentContainerPosition - 1).coerceAtLeast(0)
-                    }
-                    Keys.RIGHT -> {
-                        navigation.currentContainerPosition =
-                            (navigation.currentContainerPosition + 1).coerceAtMost(2)
-                    }
-                    Keys.UP -> {
-                        currentNav.currentItemPosition =
-                            (currentNav.currentItemPosition - 1).coerceAtLeast(0)
-                    }
-                    Keys.DOWN -> {
-                        if (currentNav.container is UserEquipment) {
-                            currentNav.currentItemPosition = (currentNav.currentItemPosition + 1)
-                                .coerceAtMost(4)
+                        if (gameController.state == GameState.Default) {
+                            user.gameObject.position = user.gameObject.position + Position(-1, 0)
                         } else {
-                            currentNav.currentItemPosition = (currentNav.currentItemPosition + 1)
-                                .coerceAtMost(currentNav.container.getItemsList().size - 1)
+                            navigation.currentContainerPosition =
+                                (navigation.currentContainerPosition - 1).coerceAtLeast(0)
                         }
                     }
+
+                    Keys.RIGHT -> {
+                        if (gameController.state == GameState.Default) {
+                            user.gameObject.position = user.gameObject.position + Position(1, 0)
+                        } else {
+                            navigation.currentContainerPosition =
+                                (navigation.currentContainerPosition + 1).coerceAtMost(2)
+                        }
+                    }
+
+                    Keys.UP -> {
+                        if (gameController.state == GameState.Default) {
+                            user.gameObject.position = user.gameObject.position + Position(0, -1)
+                        } else {
+                            currentNav.currentItemPosition =
+                                (currentNav.currentItemPosition - 1).coerceAtLeast(0)
+                        }
+                    }
+
+                    Keys.DOWN -> {
+                        if (gameController.state == GameState.Default) {
+                            user.gameObject.position = user.gameObject.position + Position(0, 1)
+                        } else {
+                            if (currentNav.container is UserEquipment) {
+                                currentNav.currentItemPosition = (currentNav.currentItemPosition + 1)
+                                    .coerceAtMost(4)
+                            } else {
+                                currentNav.currentItemPosition = (currentNav.currentItemPosition + 1)
+                                    .coerceAtMost(currentNav.container.getItemsList().size - 1)
+                            }
+                        }
+                    }
+
                     Keys.ESC -> {
                         signal()
                         frame.dispose()
                     }
+
                     Keys.SPACE -> {
                         gameController.state = when (gameController.state) {
                             GameState.Default -> GameState.Inventory

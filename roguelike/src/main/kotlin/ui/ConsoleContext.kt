@@ -1,6 +1,8 @@
 package ui
 
+import engine.Position
 import inventory.UserInventory
+import ui.entities.UserBasedViewNavigation
 import ui.inventory.containers.ContainerWithNavigation
 import ui.inventory.containers.ManyContainersWithNavigation
 
@@ -12,11 +14,13 @@ class ConsoleContext(
     val consoleHeight: Int,
 ) {
 
-    private var navigation: ManyContainersWithNavigation? = null
+    private var containersNavigation: ManyContainersWithNavigation? = null
+
+    private var viewNavigation: UserBasedViewNavigation? = null
 
     fun getUserInventoryWithNavigation(userInventory: UserInventory): ManyContainersWithNavigation {
-        if (navigation == null) {
-            navigation = ManyContainersWithNavigation(
+        if (containersNavigation == null) {
+            containersNavigation = ManyContainersWithNavigation(
                 listOf(
                     ContainerWithNavigation(userInventory.equipment),
                     ContainerWithNavigation(userInventory.storage),
@@ -25,6 +29,18 @@ class ConsoleContext(
                 currentContainerPosition = 1
             )
         }
-        return navigation!!
+        return containersNavigation!!
+    }
+
+    fun getViewNavigation(userPosition: Position): UserBasedViewNavigation {
+        if (viewNavigation == null) {
+            viewNavigation = UserBasedViewNavigation(
+                userPosition,
+                userPosition - Position(gameMapViewWidth / 2, gameMapViewHeight / 2)
+            )
+        }
+        return viewNavigation!!.apply {
+            this.userPosition = userPosition
+        }
     }
 }

@@ -1,10 +1,11 @@
-package ui.entities
+package ui.entities.renderers
 
 import engine.Position
 import engine.RectShape
 import kotlin.math.max
 import kotlin.math.min
 import ui.Renderer
+import ui.entities.GameMapStorage
 
 data class RectShapeWithChar(val position: Position, val shape: RectShape, val char: Char)
 
