@@ -1,5 +1,3 @@
 package entity
 
-class GameMap {
-    val levels: List<Level> = TODO()
-}
+data class GameMap(val levels: List<Level>)

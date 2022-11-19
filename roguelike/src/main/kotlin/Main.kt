@@ -5,7 +5,9 @@ import com.varabyte.kotter.foundation.session
 import com.varabyte.kotter.terminal.virtual.TerminalSize
 import com.varabyte.kotter.terminal.virtual.VirtualTerminal
 import entity.GameController
-import entity.models.User
+import entity.GameMap
+import entity.GameState
+import entity.Level
 import inventory.containers.UserEquipment
 import inventory.items.EquipmentType
 import inventory.items.Item
@@ -36,8 +38,8 @@ fun main() {
     }
 
     val gameRenderer = GameRenderer(consoleContext)
-    val gameController = GameController()
-    val user = gameController.currentLevel.entities.first { it is User } as User
+    val gameController = GameController(GameMap(listOf(Level())))
+    val user = gameController.user
 
     for (i in 0 until 50) {
         user.inventory.storage.addItem(object : Item {
@@ -84,6 +86,14 @@ fun main() {
                     Keys.ESC -> {
                         signal()
                         frame.dispose()
+                    }
+                    Keys.SPACE -> {
+                        gameController.state = when (gameController.state) {
+                            GameState.Default -> GameState.Inventory
+                            GameState.Inventory -> GameState.Death
+                            GameState.Death -> GameState.Win
+                            GameState.Win -> GameState.Default
+                        }
                     }
                 }
                 rerender()

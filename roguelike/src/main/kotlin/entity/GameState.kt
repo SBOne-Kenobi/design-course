@@ -1,5 +1,8 @@
 package entity
 
-enum class GameState {
-    // TODO
+enum class GameState(val isPaused: Boolean) {
+    Default(isPaused = false),
+    Inventory(isPaused = true),
+    Death(isPaused = true),
+    Win(isPaused = true),
 }
