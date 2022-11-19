@@ -1,7 +1,7 @@
 package controls
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 
-interface UserEventGenerator {
-    val eventFlow: Flow<UserEvent>
+interface UserEventGenerator : AutoCloseable {
+    val eventFlow: SharedFlow<UserEvent>
 }
