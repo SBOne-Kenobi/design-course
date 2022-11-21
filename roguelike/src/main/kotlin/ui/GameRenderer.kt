@@ -14,12 +14,13 @@ import entity.GameState.Default
 import entity.GameState.Inventory
 import entity.GameState.Win
 import inventory.UserInventory
+import launcher.Settings
 import ui.entities.GameMapStorage
 import ui.entities.UserBasedViewNavigation
 import ui.entities.renderers.LevelRenderer
 import ui.inventory.containers.renderers.ManyContainersRenderer
 
-class GameRenderer(private val context: ConsoleContext) : ConsoleRenderer<GameController>() {
+class GameRenderer(private val navigationContext: NavigationContext) : ConsoleRenderer<GameController>() {
 
     private val pressToExitText = "Press ctrl+c to exit"
 
@@ -31,8 +32,8 @@ class GameRenderer(private val context: ConsoleContext) : ConsoleRenderer<GameCo
 
     private fun UserBasedViewNavigation.toViewShape(): RectShape =
         RectShape(
-            context.gameMapViewWidth,
-            context.gameMapViewHeight,
+            Settings.gameMapViewWidth,
+            Settings.gameMapViewHeight,
             viewPosition
         )
 
@@ -40,24 +41,24 @@ class GameRenderer(private val context: ConsoleContext) : ConsoleRenderer<GameCo
         val viewX = calculateViewPosition(
             viewNavigation.viewPosition.x,
             viewNavigation.userPosition.x,
-            context.gameMapViewWidth,
-            padding = context.gameMapViewWidth / 5
+            Settings.gameMapViewWidth,
+            padding = Settings.gameMapViewWidth / 5
         )
         val viewY = calculateViewPosition(
             viewNavigation.viewPosition.y,
             viewNavigation.userPosition.y,
-            context.gameMapViewHeight,
-            padding = context.gameMapViewHeight / 3
+            Settings.gameMapViewHeight,
+            padding = Settings.gameMapViewHeight / 3
         )
         viewNavigation.viewPosition = Position(viewX, viewY)
     }
 
     private fun RenderScope.renderGameMap(data: GameController) {
-        val gameMapArray = Array(context.gameMapViewHeight) {
-            CharArray(context.gameMapViewWidth) { ' ' }
+        val gameMapArray = Array(Settings.gameMapViewHeight) {
+            CharArray(Settings.gameMapViewWidth) { ' ' }
         }
 
-        val viewNavigation = context.getViewNavigation(data.user.gameObject.position)
+        val viewNavigation = navigationContext.getViewNavigation()
         recalculateViewNavigation(viewNavigation)
 
         val viewShape = viewNavigation.toViewShape()
@@ -66,20 +67,16 @@ class GameRenderer(private val context: ConsoleContext) : ConsoleRenderer<GameCo
 
         levelRenderer.render(data.currentLevel)
 
-        justified(Justification.CENTER) {
-            padding(2)
-            bordered(BorderCharacters.ASCII) {
-                gameMapArray.forEach {
-                    textLine(String(it))
-                }
+        bordered(BorderCharacters.ASCII) {
+            gameMapArray.forEach {
+                textLine(String(it))
             }
-            textLine(" ".repeat(context.consoleWidth))
         }
     }
 
     private fun RenderScope.renderInventory(userInventory: UserInventory) {
-        val manyContainersWithNavigation = context.getUserInventoryWithNavigation(userInventory)
-        val renderer = ManyContainersRenderer(context.consoleWidth - 1, context.consoleHeight - 1)
+        val manyContainersWithNavigation = navigationContext.getUserInventoryWithNavigation(userInventory)
+        val renderer = ManyContainersRenderer(Settings.consoleWidth - 1, Settings.consoleHeight - 1)
         renderer.run {
             renderData(manyContainersWithNavigation)
         }
@@ -89,7 +86,7 @@ class GameRenderer(private val context: ConsoleContext) : ConsoleRenderer<GameCo
         justified(Justification.CENTER) {
             padding(2)
             textLine("Congratulations!")
-            textLine(" ".repeat(context.consoleWidth))
+            textLine(" ".repeat(Settings.consoleWidth))
             textLine("You win this game!")
             textLine()
             textLine(pressToExitText)
@@ -100,7 +97,7 @@ class GameRenderer(private val context: ConsoleContext) : ConsoleRenderer<GameCo
         justified(Justification.CENTER) {
             padding(2)
             textLine("Failure!")
-            textLine(" ".repeat(context.consoleWidth))
+            textLine(" ".repeat(Settings.consoleWidth))
             textLine("You dead!")
             textLine()
             textLine(pressToExitText)

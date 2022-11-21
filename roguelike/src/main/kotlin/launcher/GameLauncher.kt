@@ -15,22 +15,15 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import ui.ConsoleContext
 import ui.GameRenderer
+import ui.NavigationContext
 
 class GameLauncher : AutoCloseable {
-    private val consoleContext: ConsoleContext =
-        ConsoleContext(
-            Settings.gameMapViewWidth,
-            Settings.gameMapViewHeight,
-            Settings.consoleWidth,
-            Settings.consoleHeight
-        )
 
     private val terminal: Terminal =
         VirtualTerminal.create(
             Settings.consoleTitle,
-            TerminalSize(consoleContext.consoleWidth, consoleContext.consoleHeight)
+            TerminalSize(Settings.consoleWidth, Settings.consoleHeight)
         )
 
     init {
@@ -42,8 +35,14 @@ class GameLauncher : AutoCloseable {
     private val engine: GameEngine =
         GameEngine()
 
+    private val gameController: GameController =
+        createGame()
+
+    private val navigationContext: NavigationContext =
+        NavigationContext(gameController.user)
+
     private val gameRenderer: GameRenderer =
-        GameRenderer(consoleContext)
+        GameRenderer(navigationContext)
 
     private val kottorEventGenerator =
         KottorEventGenerator()
@@ -54,8 +53,9 @@ class GameLauncher : AutoCloseable {
     private val menuControl: UserEventController =
         UserEventController(kottorEventGenerator, activate = false)
 
-    private val gameController: GameController =
-        createGame()
+    init {
+        initListeners()
+    }
 
     private fun generateMap(): GameMap {
         val generator = MapGenerator()
@@ -73,7 +73,7 @@ class GameLauncher : AutoCloseable {
         inGameControl.addListener(gameController.user)
         inGameControl.addListener(gameController)
 
-        menuControl.addListener(consoleContext)
+        menuControl.addListener(navigationContext)
         menuControl.addListener(gameController)
     }
 
@@ -84,7 +84,6 @@ class GameLauncher : AutoCloseable {
                     renderData(gameController)
                 }
             }.run {
-                initListeners()
                 kottorEventGenerator.start(this)
 
                 coroutineScope {

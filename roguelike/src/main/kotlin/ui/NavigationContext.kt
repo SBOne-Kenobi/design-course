@@ -5,20 +5,16 @@ import controls.UserEvent
 import controls.UserEventListener
 import controls.UserKeyEvent
 import engine.Position
+import entity.models.User
 import inventory.UserInventory
 import inventory.containers.UserEquipment
 import inventory.items.EquipmentType
+import launcher.Settings
 import ui.entities.UserBasedViewNavigation
 import ui.inventory.containers.ContainerWithNavigation
 import ui.inventory.containers.ManyContainersWithNavigation
 
-
-class ConsoleContext(
-    val gameMapViewWidth: Int,
-    val gameMapViewHeight: Int,
-    val consoleWidth: Int,
-    val consoleHeight: Int,
-) : UserEventListener {
+class NavigationContext(private val user: User) : UserEventListener {
 
     private var containersNavigation: ManyContainersWithNavigation? = null
 
@@ -38,15 +34,15 @@ class ConsoleContext(
         return containersNavigation!!
     }
 
-    fun getViewNavigation(userPosition: Position): UserBasedViewNavigation {
+    fun getViewNavigation(): UserBasedViewNavigation {
         if (viewNavigation == null) {
             viewNavigation = UserBasedViewNavigation(
-                userPosition,
-                userPosition - Position(gameMapViewWidth / 2, gameMapViewHeight / 2)
+                user.gameObject.position,
+                user.gameObject.position - Position(Settings.gameMapViewWidth / 2, Settings.gameMapViewHeight / 2)
             )
         }
         return viewNavigation!!.apply {
-            this.userPosition = userPosition
+            this.userPosition = user.gameObject.position
         }
     }
 
