@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 
-class KottorEventGenerator(scope: RunScope) : UserEventGenerator {
+class KottorEventGenerator : UserEventGenerator {
 
     @OptIn(DelicateCoroutinesApi::class)
     private val threadContext = newSingleThreadContext("KottorEventGenerator")
@@ -25,7 +25,7 @@ class KottorEventGenerator(scope: RunScope) : UserEventGenerator {
         threadContext.close()
     }
 
-    init {
+    fun start(scope: RunScope) {
         scope.onKeyPressed {
             val pressedKey = when (key) {
                 Keys.LEFT -> Key.Left
@@ -36,6 +36,7 @@ class KottorEventGenerator(scope: RunScope) : UserEventGenerator {
                 Keys.ENTER -> Key.Enter
                 Keys.BACKSPACE -> Key.Back
                 Keys.ESC -> Key.Esc
+                Keys.Q -> Key.Q
                 else -> return@onKeyPressed
             }
             coroutineScope.launch {

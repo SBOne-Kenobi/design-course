@@ -9,13 +9,16 @@ class GameEngine {
     }
 
     fun moveObject(obj: GameObject, newPosition: Position): Boolean {
-        val objects = getPlacedInPosition(newPosition)
-            .filter { it.isSolid && it != obj }
+        val fakeObject = GameObject(obj.id, newPosition, obj.shape)
+
+        val objects = getIntersectedWith(fakeObject)
+
         if (objects.firstOrNull() == null) {
-            return false
+            obj.position = newPosition
+            return true
         }
-        obj.position = newPosition
-        return true
+
+        return false
     }
 
     fun areIntersected(objA: GameObject, objB: GameObject): Boolean =
@@ -29,6 +32,8 @@ class GameEngine {
     fun getIntersectedWith(gameObject: GameObject): Sequence<GameObject> =
         currentScene.objects
             .asSequence()
-            .filter { gameObject.shape.isIntersected(gameObject.position, it.shape, it.position) }
+            .filter {
+                gameObject != it && gameObject.shape.isIntersected(gameObject.position, it.shape, it.position)
+            }
 
 }

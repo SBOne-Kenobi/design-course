@@ -1,7 +1,7 @@
 package generator.info
 
-import inventory.items.Item
+import inventory.items.ItemWithAmount
 
 interface GenerationInfoWithItems : GenerationInfo {
-    val items: List<Item>
+    val items: List<ItemWithAmount>
 }

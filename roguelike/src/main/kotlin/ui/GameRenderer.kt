@@ -13,7 +13,6 @@ import entity.GameState.Death
 import entity.GameState.Default
 import entity.GameState.Inventory
 import entity.GameState.Win
-import entity.Level
 import inventory.UserInventory
 import ui.entities.GameMapStorage
 import ui.entities.UserBasedViewNavigation
@@ -21,6 +20,8 @@ import ui.entities.renderers.LevelRenderer
 import ui.inventory.containers.renderers.ManyContainersRenderer
 
 class GameRenderer(private val context: ConsoleContext) : ConsoleRenderer<GameController>() {
+
+    private val pressToExitText = "Press ctrl+c to exit"
 
     private fun RenderScope.padding(padding: Int) {
         repeat(padding) {
@@ -90,6 +91,8 @@ class GameRenderer(private val context: ConsoleContext) : ConsoleRenderer<GameCo
             textLine("Congratulations!")
             textLine(" ".repeat(context.consoleWidth))
             textLine("You win this game!")
+            textLine()
+            textLine(pressToExitText)
         }
     }
 
@@ -99,6 +102,8 @@ class GameRenderer(private val context: ConsoleContext) : ConsoleRenderer<GameCo
             textLine("Failure!")
             textLine(" ".repeat(context.consoleWidth))
             textLine("You dead!")
+            textLine()
+            textLine(pressToExitText)
         }
     }
 

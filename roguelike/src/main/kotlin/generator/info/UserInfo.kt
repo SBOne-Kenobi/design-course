@@ -2,13 +2,10 @@ package generator.info
 
 import engine.GameObject
 import generator.Characteristics
-import inventory.items.Item
+import inventory.items.ItemWithAmount
 
-class UserInfo : GenerationInfoWithCharacteristics, GenerationInfoWithItems {
-    override val characteristics: Characteristics
-        get() = TODO("Not yet implemented")
-    override val items: List<Item>
-        get() = TODO("Not yet implemented")
+data class UserInfo(
+    override val characteristics: Characteristics,
+    override val items: List<ItemWithAmount>,
     override val gameObject: GameObject
-        get() = TODO("Not yet implemented")
-}
+) : GenerationInfoWithCharacteristics, GenerationInfoWithItems

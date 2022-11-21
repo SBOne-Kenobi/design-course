@@ -13,6 +13,7 @@ enum class Key {
     Enter,
     Back,
     Esc,
+    Q,
 }
 
 enum class KeyEventType {

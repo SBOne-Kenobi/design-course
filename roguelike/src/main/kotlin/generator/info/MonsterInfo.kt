@@ -3,13 +3,11 @@ package generator.info
 import engine.GameObject
 import generator.Characteristics
 import generator.MonsterType
-import inventory.items.Item
+import inventory.items.ItemWithAmount
 
-class MonsterInfo(val type: MonsterType): GenerationInfoWithCharacteristics, GenerationInfoWithItems {
-    override val gameObject: GameObject
-        get() = TODO("Not yet implemented")
-    override val characteristics: Characteristics
-        get() = TODO("Not yet implemented")
-    override val items: List<Item>
-        get() = TODO("Not yet implemented")
-}
+data class MonsterInfo(
+    val type: MonsterType,
+    override val gameObject: GameObject,
+    override val characteristics: Characteristics,
+    override val items: List<ItemWithAmount>
+) : GenerationInfoWithCharacteristics, GenerationInfoWithItems

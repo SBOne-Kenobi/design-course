@@ -1,11 +1,9 @@
 package generator.info
 
 import engine.GameObject
-import inventory.items.Item
+import inventory.items.ItemWithAmount
 
-class ChestInfo : GenerationInfoWithItems {
-    override val items: List<Item>
-        get() = TODO("Not yet implemented")
+data class ChestInfo(
+    override val items: List<ItemWithAmount>,
     override val gameObject: GameObject
-        get() = TODO("Not yet implemented")
-}
+) : GenerationInfoWithItems

@@ -10,6 +10,9 @@ class GameScene {
         objectsData[gameObject.id] = gameObject
     }
 
+    fun unregisterObject(id: Int): GameObject? =
+        objectsData.remove(id)
+
     fun findObjectById(id: Int): GameObject? =
         objectsData[id]
 }

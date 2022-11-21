@@ -1,10 +1,9 @@
 package generator
 
-import engine.GameScene
 import generator.info.GenerationInfo
 
-class LevelInfo {
-    val scene: GameScene = TODO()
-    val info: List<GenerationInfo> = TODO()
-    val description: String = TODO()
-}
+data class LevelInfo(
+    val name: String,
+    val description: String,
+    val info: List<GenerationInfo>
+)

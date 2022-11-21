@@ -1,19 +1,20 @@
 package inventory.containers
 
 import inventory.items.Item
+import inventory.items.ItemWithAmount
 
-open class DefaultContainer : MutableItemsContainer {
-    protected val itemsData: MutableList<Item> = mutableListOf()
+open class DefaultContainer() : MutableItemsContainer {
     protected val itemsToCountData: MutableMap<Item, Int> = mutableMapOf()
+
+    constructor(items: Iterable<ItemWithAmount>) : this() {
+        itemsToCountData.putAll(items.map { it.item to it.amount })
+    }
 
     override fun getItemAmount(item: Item): Int = itemsToCountData.getOrDefault(item, 0)
 
-    override fun getItemsList(): List<Item> = itemsData.toList()
+    override fun getItemsList(): List<Item> = itemsToCountData.keys.toList()
 
     override fun addItem(item: Item, count: Int): Item {
-        if (!itemsData.contains(item)) {
-            itemsData.add(item)
-        }
         itemsToCountData[item] = itemsToCountData.getOrDefault(item, 0) + count
 
         return item
@@ -27,7 +28,6 @@ open class DefaultContainer : MutableItemsContainer {
 
         itemsToCountData[item] = curItemCount - count
         if (itemsToCountData[item] == 0) {
-            itemsData.remove(item)
             itemsToCountData.remove(item)
         }
         return true

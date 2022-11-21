@@ -1,8 +1,12 @@
 package entity.models
 
+import controls.Key
 import controls.UserEvent
 import controls.UserEventListener
+import controls.UserKeyEvent
+import engine.GameEngine
 import engine.GameObject
+import engine.Position
 import generator.Characteristics
 import inventory.UserInventory
 import inventory.items.equipments.AbstractEquipment
@@ -10,6 +14,7 @@ import inventory.items.equipments.AbstractEquipment
 class User(
     gameObject: GameObject,
     characteristics: Characteristics,
+    private val engine: GameEngine
 ) : EntityWithCharacteristics(gameObject, characteristics), UserEventListener {
     val inventory: UserInventory = UserInventory()
 
@@ -48,7 +53,18 @@ class User(
     }
 
     override fun onEvent(event: UserEvent) {
-        TODO("Not yet implemented")
+        when (event) {
+            is UserKeyEvent -> {
+                val diff = when (event.key) {
+                    Key.Left -> Position(-1, 0)
+                    Key.Right -> Position(1, 0)
+                    Key.Up -> Position(0, -1)
+                    Key.Down -> Position(0, 1)
+                    else -> Position(0, 0)
+                }
+                engine.moveObject(gameObject, gameObject.position + diff)
+            }
+        }
     }
 
     override fun onDeath() {
