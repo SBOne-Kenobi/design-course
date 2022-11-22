@@ -25,6 +25,10 @@ class GameController(
     val user: User =
         currentLevel.entities.first { it is User } as User
 
+    init {
+        user.gameController = this
+    }
+
     fun tick() {
         // TODO: move handling user events here
         if (!state.isPaused) {
@@ -46,7 +50,7 @@ class GameController(
             true
         } ?: false
 
-    private fun openOrCloseInventory() {
+    fun openOrCloseInventory() {
         state = when (state) {
             GameState.Default -> GameState.Inventory
             GameState.Inventory -> GameState.Default

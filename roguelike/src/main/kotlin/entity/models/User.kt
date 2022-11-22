@@ -7,6 +7,7 @@ import controls.UserKeyEvent
 import engine.GameEngine
 import engine.GameObject
 import engine.Position
+import entity.GameController
 import generator.Characteristics
 import inventory.UserInventory
 import inventory.items.equipments.AbstractEquipment
@@ -16,7 +17,21 @@ class User(
     characteristics: Characteristics,
     private val engine: GameEngine
 ) : EntityWithCharacteristics(gameObject, characteristics), UserEventListener {
+    lateinit var gameController: GameController
+
     val inventory: UserInventory = UserInventory()
+
+    private fun interactWith(entity: Entity): Boolean =
+        when (entity) {
+            is Chest -> {
+                entity.items.getItemsList().forEach { item ->
+                    inventory.storage.addItem(item, entity.items.getItemAmount(item))
+                }
+                gameController.currentLevel.removeEntity(entity.id)
+                true
+            }
+            else -> false
+        }
 
     fun putOnEquipment(item: AbstractEquipment) {
         val prevItem = inventory.equipment.addItem(item)
@@ -60,9 +75,18 @@ class User(
                     Key.Right -> Position(1, 0)
                     Key.Up -> Position(0, -1)
                     Key.Down -> Position(0, 1)
-                    else -> Position(0, 0)
+                    else -> return
                 }
-                engine.moveObject(gameObject, gameObject.position + diff)
+                val newPosition = gameObject.position + diff
+                val objects = engine.getObjectsWithPosition(gameObject, newPosition)
+                val canMove = objects.fold(true) { acc, obj ->
+                    val entity = gameController.currentLevel.findEntity(obj.id)
+                    val interact = entity?.let { interactWith(it) } ?: true
+                    acc && interact
+                }
+                if (canMove) {
+                    engine.moveObject(gameObject, newPosition)
+                }
             }
         }
     }

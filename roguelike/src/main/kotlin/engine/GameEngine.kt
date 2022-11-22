@@ -8,10 +8,14 @@ class GameEngine {
         currentScene = scene
     }
 
-    fun moveObject(obj: GameObject, newPosition: Position): Boolean {
+    fun getObjectsWithPosition(obj: GameObject, newPosition: Position): Sequence<GameObject> {
         val fakeObject = GameObject(obj.id, newPosition, obj.shape)
 
-        val objects = getIntersectedWith(fakeObject)
+        return getIntersectedWith(fakeObject)
+    }
+
+    fun moveObject(obj: GameObject, newPosition: Position): Boolean {
+        val objects = getObjectsWithPosition(obj, newPosition)
 
         if (objects.firstOrNull() == null) {
             obj.position = newPosition
