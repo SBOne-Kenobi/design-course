@@ -1,15 +1,17 @@
 package generator.generators
 
 import engine.Position
+import generator.generators.base.IdGenerator
+import generator.generators.base.WallGenerator
 import generator.info.GenerationInfo
 import generator.info.LevelInfo
 
 abstract class AbstractLevelGenerator(
-    private val name: String,
-    private val description: String,
-    private val width: Int,
-    private val height: Int,
-    private val idGenerator: IdGenerator,
+    protected val name: String,
+    protected val description: String,
+    protected val width: Int,
+    protected val height: Int,
+    protected val idGenerator: IdGenerator,
 ) : InfoGenerator<LevelInfo> {
     protected val info = mutableListOf<GenerationInfo>()
 
@@ -18,6 +20,7 @@ abstract class AbstractLevelGenerator(
         addObstacles()
         addChests()
         addMonsters()
+        addAdditional()
         return LevelInfo(name, description, info.toList())
     }
 
@@ -37,4 +40,6 @@ abstract class AbstractLevelGenerator(
     abstract fun addChests()
 
     abstract fun addMonsters()
+
+    abstract fun addAdditional()
 }

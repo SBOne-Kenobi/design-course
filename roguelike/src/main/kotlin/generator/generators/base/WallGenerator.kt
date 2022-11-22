@@ -1,8 +1,9 @@
-package generator.generators
+package generator.generators.base
 
 import engine.GameObject
 import engine.Position
 import engine.RectShape
+import generator.generators.InfoGenerator
 import generator.info.WallInfo
 
 class WallGenerator(

@@ -9,7 +9,7 @@ import controls.UserEventController
 import engine.GameEngine
 import entity.GameController
 import entity.GameMap
-import generator.generators.MapGenerator
+import generator.generators.base.MapGenerator
 import java.awt.Frame
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
