@@ -64,7 +64,7 @@ class GameController(
                 if (event.type == KeyEventType.Pressed) {
                     when (event.key) {
                         Key.Q -> openOrCloseInventory()
-                        Key.Space -> {
+                        Key.Esc -> {
                             state = when (state) {
                                 GameState.Default -> GameState.Inventory
                                 GameState.Inventory -> GameState.Death

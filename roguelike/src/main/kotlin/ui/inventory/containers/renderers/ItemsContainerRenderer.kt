@@ -7,13 +7,13 @@ import ui.inventory.items.ItemRenderStrategy
 import ui.inventory.items.renderers.ItemRenderer
 import ui.inventory.items.renderers.SelectedItemRenderer
 
-abstract class ItemsContainerRenderer<in T : ItemsContainer>(
+abstract class ItemsContainerRenderer<in T : ItemsContainer, in E>(
     var maxWidth: Int,
     val itemRenderStrategy: ItemRenderStrategy,
-) : ConsoleRenderer<ContainerWithNavigation<T>>()
+) : ConsoleRenderer<ContainerWithNavigation<T, E>>()
 
-fun <T: ItemsContainer> ItemRenderer.wrapRespectingNavigation(
-    data: ContainerWithNavigation<T>,
+fun <T: ItemsContainer, E> ItemRenderer.wrapRespectingNavigation(
+    data: ContainerWithNavigation<T, E>,
     position: Int,
 ): ItemRenderer {
     return if (position == data.currentItemPosition) {

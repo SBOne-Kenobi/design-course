@@ -17,6 +17,7 @@ import generator.info.MonsterInfo
 import generator.info.UserInfo
 import generator.info.WallInfo
 import inventory.containers.DefaultContainer
+import inventory.grimoire.ItemRecipe
 
 class InfoTranslator(
    private val engine: GameEngine
@@ -28,7 +29,7 @@ class InfoTranslator(
 
     private fun translate(levelInfo: LevelInfo): Level {
         val scene = GameScene()
-        val entities = levelInfo.info.mapNotNull(::translate)
+        val entities = levelInfo.info.mapNotNull(::translateEntity)
         entities.forEach {
             scene.registerObject(it.gameObject)
         }
@@ -41,12 +42,16 @@ class InfoTranslator(
         )
     }
 
-    private fun translate(info: GenerationInfo): Entity? = when (info) {
+    private fun translateEntity(info: GenerationInfo): Entity? = when (info) {
         is WallInfo -> Wall(info.gameObject)
         is ChestInfo -> Chest(info.gameObject, DefaultContainer(info.items))
         is UserInfo -> User(info.gameObject, info.characteristics, engine).apply {
             info.items.forEach { (item, amount) ->
-                inventory.storage.addItem(item, amount)
+                if (item is ItemRecipe) {
+                    inventory.grimoire.recipes.add(item)
+                } else {
+                    inventory.storage.addItem(item, amount)
+                }
             }
         }
         is MonsterInfo -> Monster(info.gameObject, info.characteristics, info.type).apply {

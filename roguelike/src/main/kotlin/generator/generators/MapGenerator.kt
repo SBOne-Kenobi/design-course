@@ -4,14 +4,18 @@ import engine.GameObject
 import engine.Position
 import engine.RectShape
 import generator.Characteristics
+import generator.info.ChestInfo
 import generator.info.GameMapInfo
 import generator.info.LevelInfo
 import generator.info.UserInfo
 import generator.info.WallInfo
-import inventory.items.EquipmentType
-import inventory.items.Item
 import inventory.items.ItemWithAmount
-import kotlin.random.Random
+import inventory.items.equipments.arms.Gloves
+import inventory.items.equipments.head.Helmet
+import inventory.items.equipments.weapon.Sword
+import inventory.items.recipes.StoneRecipe
+import inventory.items.storage.Magma
+import inventory.items.storage.Water
 
 class MapGenerator : InfoGenerator<GameMapInfo> {
     override fun generate(): GameMapInfo {
@@ -30,18 +34,22 @@ class MapGenerator : InfoGenerator<GameMapInfo> {
 
                         UserInfo(
                             Characteristics(0, 0, 0),
-                            (0 until 50).map {
-                                ItemWithAmount(
-                                    object : Item {
-                                        override val name: String = "Item $it"
-                                        override val description: String = ""
-                                        override val equipmentType: EquipmentType = EquipmentType.None
-                                    },
-                                    Random.nextInt(1, 30)
-                                )
-                            },
+                            listOf(
+                                ItemWithAmount(Gloves, 1),
+                                ItemWithAmount(StoneRecipe, 1)
+                            ),
                             GameObject(5, Position(2, 2), RectShape())
-                        )
+                        ),
+
+                        ChestInfo(
+                            listOf(
+                                ItemWithAmount(Helmet, 1),
+                                ItemWithAmount(Sword, 2),
+                                ItemWithAmount(Water, 5),
+                                ItemWithAmount(Magma, 6),
+                            ),
+                            GameObject(6, Position(7, 8), RectShape())
+                        ),
                     )
                 )
             )

@@ -30,20 +30,23 @@ class User(
                 gameController.currentLevel.removeEntity(entity.id)
                 true
             }
+
             else -> false
         }
 
     fun putOnEquipment(item: AbstractEquipment) {
-        val prevItem = inventory.equipment.addItem(item)
+        if (inventory.storage.removeItem(item)) {
+            val prevItem = inventory.equipment.addItem(item)
 
-        prevItem?.let {
-            if (prevItem is AbstractEquipment) {
-                undoBonuses(prevItem)
-                inventory.storage.addItem(prevItem)
+            prevItem?.let {
+                if (prevItem is AbstractEquipment) {
+                    undoBonuses(prevItem)
+                    inventory.storage.addItem(prevItem)
+                }
             }
-        }
 
-        applyBonuses(item)
+            applyBonuses(item)
+        }
     }
 
     fun takeOffEquipment(item: AbstractEquipment): Boolean =
@@ -53,6 +56,18 @@ class User(
                 inventory.storage.addItem(item)
             }
         }
+
+    fun createFromMagicPot(): Boolean {
+        val recipe = inventory.run {
+            grimoire.getMatchRecipe(pot.getItemsList().associateWith {
+                pot.getItemAmount(it)
+            })
+        } ?: return false
+        return inventory.pot.applyRecipe(recipe)?.let {
+            inventory.storage.addItem(it)
+            true
+        } ?: false
+    }
 
     private fun applyBonuses(item: AbstractEquipment) {
         characteristics.healthPoints += item.healthPointsBonus

@@ -13,30 +13,26 @@ import ui.inventory.items.renderers.ItemWithAmountRenderer
 
 class DefaultContainerRenderer(
     maxWidth: Int,
-    itemRenderStrategy: ItemRenderStrategy,
-    private val itemOrdering: Comparator<Item> = compareBy { it.name }
-) : ItemsContainerRenderer<DefaultContainer>(maxWidth, itemRenderStrategy) {
-    override fun RenderScope.renderData(data: ContainerWithNavigation<DefaultContainer>) {
-        val items = data.container
-            .getItemsList()
+    itemRenderStrategy: ItemRenderStrategy
+) : ItemsContainerRenderer<DefaultContainer, Item>(maxWidth, itemRenderStrategy) {
+    override fun RenderScope.renderData(data: ContainerWithNavigation<DefaultContainer, Item>) {
+        val items = data.values
 
         if (items.isNotEmpty()) {
-            items
-                .sortedWith(itemOrdering)
-                .forEachIndexed { index, item ->
-                    if (index < data.currentBeginPosition) return@forEachIndexed
-                    ItemWithAmountRenderer(
-                        itemRenderStrategy.getItemRenderer(item, maxWidth),
-                        data.container.getItemAmount(item)
-                    ).wrapRespectingNavigation(
-                        data, index
-                    ).run {
-                        scopedState {
-                            renderData(item)
-                            textLine()
-                        }
+            items.forEachIndexed { index, item ->
+                if (index < data.currentBeginPosition) return@forEachIndexed
+                ItemWithAmountRenderer(
+                    itemRenderStrategy.getItemRenderer(item, maxWidth),
+                    data.container.getItemAmount(item)
+                ).wrapRespectingNavigation(
+                    data, index
+                ).run {
+                    scopedState {
+                        renderData(item)
+                        textLine()
                     }
                 }
+            }
         } else {
             if (data.isActive) {
                 green {

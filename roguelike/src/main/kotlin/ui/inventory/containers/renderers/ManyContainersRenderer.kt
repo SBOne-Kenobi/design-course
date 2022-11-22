@@ -31,7 +31,7 @@ class ManyContainersRenderer(
         }
 
     private fun RenderScope.renderContainer(
-        containerWithNavigation: ContainerWithNavigation<ItemsContainer>,
+        containerWithNavigation: ContainerWithNavigation<ItemsContainer, Any>,
         width: Int,
     ) {
         val containerRenderer = containerRendererFactory.getContainerRenderer(
