@@ -7,5 +7,5 @@ import inventory.items.ItemWithAmount
 data class UserInfo(
     override val characteristics: Characteristics,
     override val items: List<ItemWithAmount>,
-    override val gameObject: GameObject
+    val gameObject: GameObject
 ) : GenerationInfoWithCharacteristics, GenerationInfoWithItems

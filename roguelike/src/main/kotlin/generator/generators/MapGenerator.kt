@@ -1,8 +1,11 @@
-package generator
+package generator.generators
 
 import engine.GameObject
 import engine.Position
 import engine.RectShape
+import generator.Characteristics
+import generator.info.GameMapInfo
+import generator.info.LevelInfo
 import generator.info.UserInfo
 import generator.info.WallInfo
 import inventory.items.EquipmentType
@@ -10,8 +13,8 @@ import inventory.items.Item
 import inventory.items.ItemWithAmount
 import kotlin.random.Random
 
-class MapGenerator {
-    fun generateMap(): GameMapInfo {
+class MapGenerator : InfoGenerator<GameMapInfo> {
+    override fun generate(): GameMapInfo {
         return GameMapInfo(
             listOf(
                 LevelInfo(
@@ -33,7 +36,7 @@ class MapGenerator {
                                         override val name: String = "Item $it"
                                         override val description: String = ""
                                         override val equipmentType: EquipmentType = EquipmentType.None
-                                    }, 
+                                    },
                                     Random.nextInt(1, 30)
                                 )
                             },

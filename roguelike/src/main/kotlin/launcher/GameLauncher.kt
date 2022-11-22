@@ -9,7 +9,7 @@ import controls.UserEventController
 import engine.GameEngine
 import entity.GameController
 import entity.GameMap
-import generator.MapGenerator
+import generator.generators.MapGenerator
 import java.awt.Frame
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -59,7 +59,7 @@ class GameLauncher : AutoCloseable {
 
     private fun generateMap(): GameMap {
         val generator = MapGenerator()
-        val mapInfo = generator.generateMap()
+        val mapInfo = generator.generate()
         val translator = InfoTranslator(engine)
         return translator.translate(mapInfo)
     }

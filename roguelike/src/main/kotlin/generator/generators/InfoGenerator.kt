@@ -2,6 +2,8 @@ package generator.generators
 
 import generator.info.GenerationInfo
 
-interface InfoGenerator<out T: GenerationInfo> {
+interface Generator<out T> {
     fun generate(): T
 }
+
+interface InfoGenerator<out T : GenerationInfo> : Generator<T>

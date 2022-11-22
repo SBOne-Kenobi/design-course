@@ -7,7 +7,7 @@ import inventory.items.ItemWithAmount
 
 data class MonsterInfo(
     val type: MonsterType,
-    override val gameObject: GameObject,
+    val gameObject: GameObject,
     override val characteristics: Characteristics,
     override val items: List<ItemWithAmount>
 ) : GenerationInfoWithCharacteristics, GenerationInfoWithItems

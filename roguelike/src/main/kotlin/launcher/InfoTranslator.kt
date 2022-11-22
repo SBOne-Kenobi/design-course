@@ -9,8 +9,8 @@ import entity.models.Entity
 import entity.models.Monster
 import entity.models.User
 import entity.models.Wall
-import generator.GameMapInfo
-import generator.LevelInfo
+import generator.info.GameMapInfo
+import generator.info.LevelInfo
 import generator.info.ChestInfo
 import generator.info.GenerationInfo
 import generator.info.MonsterInfo
