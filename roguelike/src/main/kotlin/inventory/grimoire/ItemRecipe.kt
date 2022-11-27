@@ -4,6 +4,9 @@ import inventory.items.EquipmentType
 import inventory.items.Item
 
 
+/**
+ * Item's recipe.
+ */
 abstract class ItemRecipe(
     override val name: String,
     val ingredients: Map<Item, Int>,
@@ -18,10 +21,16 @@ abstract class ItemRecipe(
         }
     }
 
+    /**
+     * Can be done using [availableItemsAmount].
+     */
     fun isApplicable(availableItemsAmount: Map<Item, Int>): Boolean = ingredients.all { (item, count) ->
         availableItemsAmount.getOrDefault(item, 0) >= count
     }
 
+    /**
+     * Is perfectly matches to [availableItemsAmount].
+     */
     fun isMatch(availableItemsAmount: Map<Item, Int>): Boolean =
         isApplicable(availableItemsAmount) && availableItemsAmount.all { (item, count) ->
             ingredients.getOrDefault(item, 0) >= count

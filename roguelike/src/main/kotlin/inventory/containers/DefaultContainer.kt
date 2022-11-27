@@ -3,6 +3,9 @@ package inventory.containers
 import inventory.items.Item
 import inventory.items.ItemWithAmount
 
+/**
+ * Default implementation of mutable items' container.
+ */
 open class DefaultContainer() : MutableItemsContainer {
     protected val itemsToCountData: MutableMap<Item, Int> = mutableMapOf()
 
