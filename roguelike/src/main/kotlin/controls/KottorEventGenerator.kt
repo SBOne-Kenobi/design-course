@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 
+/**
+ * [UserEvent] generator from [RunScope] context of kottor library.
+ */
 class KottorEventGenerator : UserEventGenerator {
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -25,6 +28,9 @@ class KottorEventGenerator : UserEventGenerator {
         threadContext.close()
     }
 
+    /**
+     * Start generate events using [scope].
+     */
     fun start(scope: RunScope) {
         scope.onKeyPressed {
             val pressedKey = when (key) {
