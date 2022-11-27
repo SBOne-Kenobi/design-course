@@ -1,5 +1,8 @@
 package launcher
 
+/**
+ * Global game settings.
+ */
 object Settings {
     const val consoleTitle = "Roguelike"
     const val consoleWidth = 100

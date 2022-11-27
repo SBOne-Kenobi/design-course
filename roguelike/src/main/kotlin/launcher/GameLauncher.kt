@@ -18,6 +18,15 @@ import kotlinx.coroutines.launch
 import ui.GameRenderer
 import ui.NavigationContext
 
+/**
+ * Game launcher controls the main pipeline of the game.
+ *
+ * 1. Initialise console
+ * 2. Generate the game map
+ * 3. Translate generated into entities
+ * 4. Initialise UI
+ * 5. Do main loop
+ */
 class GameLauncher : AutoCloseable {
 
     private val terminal: Terminal =
@@ -77,6 +86,9 @@ class GameLauncher : AutoCloseable {
         menuControl.addListener(gameController)
     }
 
+    /**
+     * Run the game.
+     */
     fun run() {
         session(terminal) {
             section {

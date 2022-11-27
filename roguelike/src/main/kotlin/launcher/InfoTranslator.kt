@@ -19,9 +19,16 @@ import generator.info.WallInfo
 import inventory.containers.DefaultContainer
 import inventory.grimoire.ItemRecipe
 
+/**
+ * Class that creates entities from generation info.
+ */
 class InfoTranslator(
    private val engine: GameEngine
 ) {
+
+    /**
+     * Translate [GameMapInfo] to [GameMap].
+     */
     fun translate(gameMapInfo: GameMapInfo): GameMap =
         GameMap(
             gameMapInfo.levels.map(::translate)
