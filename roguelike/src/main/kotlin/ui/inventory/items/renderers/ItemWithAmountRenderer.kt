@@ -6,6 +6,9 @@ import inventory.items.Item
 import ui.inventory.extend
 import ui.inventory.items.ItemRendererWrapper
 
+/**
+ * Wrap rendering by adding an amount rendering.
+ */
 class ItemWithAmountRenderer(
     delegate: ItemRenderer,
     var amount: Int = 0

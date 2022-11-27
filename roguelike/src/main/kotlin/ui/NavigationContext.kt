@@ -18,19 +18,25 @@ import ui.inventory.containers.DefaultContainerWithNavigation
 import ui.inventory.containers.ManyContainersWithNavigation
 import ui.inventory.containers.UserEquipmentWithNavigation
 
+/**
+ * Class contains the global navigation information on UI.
+ */
 class NavigationContext(private val user: User) : UserEventListener {
 
     private var containersNavigation: ManyContainersWithNavigation? = null
 
     private var viewNavigation: UserBasedViewNavigation? = null
 
-    fun getUserInventoryWithNavigation(userInventory: UserInventory): ManyContainersWithNavigation {
+    /**
+     * Get the user's inventory navigation.
+     */
+    fun getUserInventoryWithNavigation(): ManyContainersWithNavigation {
         if (containersNavigation == null) {
             containersNavigation = ManyContainersWithNavigation(
                 listOf(
-                    UserEquipmentWithNavigation(userInventory.equipment),
-                    DefaultContainerWithNavigation(userInventory.storage),
-                    DefaultContainerWithNavigation(userInventory.pot)
+                    UserEquipmentWithNavigation(user.inventory.equipment),
+                    DefaultContainerWithNavigation(user.inventory.storage),
+                    DefaultContainerWithNavigation(user.inventory.pot)
                 ),
                 currentContainerPosition = 1
             )
@@ -47,6 +53,9 @@ class NavigationContext(private val user: User) : UserEventListener {
     private fun ManyContainersWithNavigation.getPot(): DefaultContainerWithNavigation =
         containers[2] as DefaultContainerWithNavigation
 
+    /**
+     * Get view navigation that's based on player's position.
+     */
     fun getViewNavigation(): UserBasedViewNavigation {
         if (viewNavigation == null) {
             viewNavigation = UserBasedViewNavigation(

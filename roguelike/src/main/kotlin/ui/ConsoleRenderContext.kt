@@ -2,7 +2,7 @@ package ui
 
 import com.varabyte.kotter.runtime.render.RenderScope
 
+/**
+ * Context for console rendering.
+ */
 data class ConsoleRenderContext<out T>(val renderScope: RenderScope, val data: T)
-
-fun <T> RenderScope.makeContext(data: T) =
-    ConsoleRenderContext(this, data)

@@ -5,6 +5,9 @@ import com.varabyte.kotter.runtime.render.RenderScope
 import inventory.items.Item
 import ui.inventory.extend
 
+/**
+ * Simple items' renderer as text.
+ */
 class TextItemRenderer(
     maxWidth: Int
 ) : ItemRenderer(maxWidth) {

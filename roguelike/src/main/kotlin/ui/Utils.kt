@@ -1,6 +1,6 @@
 package ui
 
-fun calculateViewPosition(
+internal fun calculateViewPosition(
     viewPosition: Int,
     targetPosition: Int,
     viewSize: Int,

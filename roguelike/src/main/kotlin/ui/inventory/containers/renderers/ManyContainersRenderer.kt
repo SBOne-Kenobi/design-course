@@ -16,6 +16,9 @@ import ui.inventory.items.ItemRenderStrategy
 import ui.inventory.items.renderers.ItemRenderer
 import ui.inventory.items.renderers.TextItemRenderer
 
+/**
+ * Renderer of several containers.
+ */
 class ManyContainersRenderer(
     var maxWidth: Int,
     var maxHeight: Int,

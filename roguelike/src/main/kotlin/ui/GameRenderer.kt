@@ -103,8 +103,8 @@ class GameRenderer(private val navigationContext: NavigationContext) : ConsoleRe
         }
     }
 
-    private fun RenderScope.renderInventory(userInventory: UserInventory) {
-        val manyContainersWithNavigation = navigationContext.getUserInventoryWithNavigation(userInventory)
+    private fun RenderScope.renderInventory() {
+        val manyContainersWithNavigation = navigationContext.getUserInventoryWithNavigation()
         val renderer = ManyContainersRenderer(Settings.consoleWidth - 1, Settings.consoleHeight - 1)
         renderer.run {
             renderData(manyContainersWithNavigation)
@@ -136,7 +136,7 @@ class GameRenderer(private val navigationContext: NavigationContext) : ConsoleRe
     override fun RenderScope.renderData(data: GameController) {
         when (data.state) {
             Default -> renderGameMap(data)
-            Inventory -> renderInventory(data.user.inventory)
+            Inventory -> renderInventory()
             Death -> renderDeath()
             Win -> renderWin()
         }

@@ -7,12 +7,15 @@ import ui.inventory.items.ItemRenderStrategy
 import ui.inventory.items.renderers.ItemRenderer
 import ui.inventory.items.renderers.SelectedItemRenderer
 
+/**
+ * Renderer of [ItemsContainer].
+ */
 abstract class ItemsContainerRenderer<in T : ItemsContainer, in E>(
     var maxWidth: Int,
     val itemRenderStrategy: ItemRenderStrategy,
 ) : ConsoleRenderer<ContainerWithNavigation<T, E>>()
 
-fun <T: ItemsContainer, E> ItemRenderer.wrapRespectingNavigation(
+internal fun <T: ItemsContainer, E> ItemRenderer.wrapRespectingNavigation(
     data: ContainerWithNavigation<T, E>,
     position: Int,
 ): ItemRenderer {

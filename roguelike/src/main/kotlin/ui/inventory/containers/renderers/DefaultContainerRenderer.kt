@@ -11,6 +11,9 @@ import ui.inventory.extend
 import ui.inventory.items.ItemRenderStrategy
 import ui.inventory.items.renderers.ItemWithAmountRenderer
 
+/**
+ * Renderer of [DefaultContainer].
+ */
 class DefaultContainerRenderer(
     maxWidth: Int,
     itemRenderStrategy: ItemRenderStrategy

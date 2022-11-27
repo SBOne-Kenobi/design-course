@@ -6,6 +6,9 @@ import inventory.containers.UserEquipment
 import inventory.items.EquipmentType
 import inventory.items.Item
 
+/**
+ * Navigation across a container.
+ */
 abstract class ContainerWithNavigation<out T : ItemsContainer, out E>(
     val container: T,
     var isActive: Boolean = false,
@@ -14,9 +17,15 @@ abstract class ContainerWithNavigation<out T : ItemsContainer, out E>(
 ) {
     abstract val values: List<E>
 
+    /**
+     * Get selected item.
+     */
     abstract fun getCurrentItem(): Item?
 }
 
+/**
+ * Default navigation across [DefaultContainer].
+ */
 class DefaultContainerWithNavigation(
     container: DefaultContainer,
     isActive: Boolean = false,
@@ -34,6 +43,9 @@ class DefaultContainerWithNavigation(
 
 }
 
+/**
+ * The [UserEquipment]'s navigation.
+ */
 class UserEquipmentWithNavigation(
     container: UserEquipment,
     isActive: Boolean = false,

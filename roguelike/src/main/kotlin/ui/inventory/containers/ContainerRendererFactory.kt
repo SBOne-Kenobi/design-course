@@ -10,6 +10,9 @@ import ui.inventory.containers.renderers.ItemsContainerRenderer
 import ui.inventory.containers.renderers.UserEquipmentRenderer
 import ui.inventory.items.ItemRenderStrategy
 
+/**
+ * Factory of container renderers.
+ */
 class ContainerRendererFactory {
 
     private class ItemsContainerRendererWrapper<T: ItemsContainer, E>(

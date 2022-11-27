@@ -11,6 +11,9 @@ import ui.inventory.containers.ContainerWithNavigation
 import ui.inventory.extend
 import ui.inventory.items.ItemRenderStrategy
 
+/**
+ * Renderer of [UserEquipment].
+ */
 class UserEquipmentRenderer(
     maxWidth: Int,
     itemRenderStrategy: ItemRenderStrategy,

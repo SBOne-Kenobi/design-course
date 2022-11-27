@@ -7,6 +7,9 @@ import com.varabyte.kotter.runtime.render.RenderScope
 import inventory.items.Item
 import ui.inventory.items.ItemRendererWrapper
 
+/**
+ * Wrap rendering item with color and choosing symbol '>'.
+ */
 class SelectedItemRenderer(
     var isActive: Boolean,
     delegate: ItemRenderer
