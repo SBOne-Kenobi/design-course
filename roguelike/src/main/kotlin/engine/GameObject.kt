@@ -1,5 +1,13 @@
 package engine
 
+/**
+ * Class of an object on a game map.
+ *
+ * @param id id of the object
+ * @param position position of the object
+ * @param shape shape of the object
+ * @param isSolid specifies the object is solid or not
+ */
 open class GameObject(
     val id: Int,
     var position: Position,

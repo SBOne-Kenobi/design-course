@@ -58,6 +58,10 @@ class GameController(
         }
     }
 
+    fun userDeath() {
+        state = GameState.Death
+    }
+
     override fun onEvent(event: UserEvent) {
         when (event) {
             is UserKeyEvent -> {

@@ -109,6 +109,6 @@ class User(
     }
 
     override fun onDeath() {
-        TODO("Not yet implemented")
+        gameController.userDeath()
     }
 }
