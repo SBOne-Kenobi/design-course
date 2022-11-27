@@ -5,9 +5,12 @@ import generator.Characteristics
 import generator.MonsterType
 import inventory.items.ItemWithAmount
 
+/**
+ * Info for monster generation.
+ */
 data class MonsterInfo(
     val type: MonsterType,
     val gameObject: GameObject,
-    override val characteristics: Characteristics,
-    override val items: List<ItemWithAmount>
-) : GenerationInfoWithCharacteristics, GenerationInfoWithItems
+    val characteristics: Characteristics,
+    val items: List<ItemWithAmount>
+) : GenerationInfo

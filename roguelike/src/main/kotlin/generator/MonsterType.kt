@@ -1,5 +1,8 @@
 package generator
 
+/**
+ * The type of monster.
+ */
 interface MonsterType {
     val description: String
     val initHealthPoints: Int

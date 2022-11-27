@@ -8,6 +8,9 @@ import generator.generators.AbstractMonsterTypeGenerator
 import generator.generators.InfoGenerator
 import generator.info.MonsterInfo
 
+/**
+ * The monster generator.
+ */
 class MonsterGenerator(
     private val idGenerator: IdGenerator,
     private val position: Position,

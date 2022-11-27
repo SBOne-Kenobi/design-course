@@ -6,6 +6,9 @@ import engine.RectShape
 import generator.generators.InfoGenerator
 import generator.info.WallInfo
 
+/**
+ * Wall generator.
+ */
 class WallGenerator(
     private val idGenerator: IdGenerator,
     private val position: Position,

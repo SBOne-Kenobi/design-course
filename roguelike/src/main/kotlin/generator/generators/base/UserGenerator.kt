@@ -7,6 +7,9 @@ import generator.generators.ItemsGenerator
 import generator.generators.InfoGenerator
 import generator.info.UserInfo
 
+/**
+ * The user generator.
+ */
 class UserGenerator(
     private val idGenerator: IdGenerator,
     private val position: Position,

@@ -3,7 +3,10 @@ package generator.info
 import engine.GameObject
 import inventory.items.ItemWithAmount
 
+/**
+ * Info for chest generation.
+ */
 data class ChestInfo(
-    override val items: List<ItemWithAmount>,
+    val items: List<ItemWithAmount>,
     val gameObject: GameObject
-) : GenerationInfoWithItems
+) : GenerationInfo

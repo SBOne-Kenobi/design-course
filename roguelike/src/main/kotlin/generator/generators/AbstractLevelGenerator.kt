@@ -6,6 +6,16 @@ import generator.generators.base.WallGenerator
 import generator.info.GenerationInfo
 import generator.info.LevelInfo
 
+/**
+ * Abstract level generator.
+ *
+ * There are several steps for level generation:
+ * 1. generate borders of level
+ * 2. generate any obstacles within level
+ * 3. generate chests
+ * 4. generate monster
+ * 5. and generate something additional
+ */
 abstract class AbstractLevelGenerator(
     protected val name: String,
     protected val description: String,

@@ -18,6 +18,9 @@ import inventory.items.storage.Magma
 import inventory.items.storage.Water
 import kotlin.random.Random
 
+/**
+ * Very simple level generator with one obstacle, one chest and one player.
+ */
 class SimpleLevel : AbstractLevelGenerator(
     name = "Simple level",
     description = "Simple level with one chest",

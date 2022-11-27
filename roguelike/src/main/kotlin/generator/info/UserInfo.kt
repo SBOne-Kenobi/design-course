@@ -4,8 +4,11 @@ import engine.GameObject
 import generator.Characteristics
 import inventory.items.ItemWithAmount
 
+/**
+ * Info for user generation.
+ */
 data class UserInfo(
-    override val characteristics: Characteristics,
-    override val items: List<ItemWithAmount>,
+    val characteristics: Characteristics,
+    val items: List<ItemWithAmount>,
     val gameObject: GameObject
-) : GenerationInfoWithCharacteristics, GenerationInfoWithItems
+) : GenerationInfo

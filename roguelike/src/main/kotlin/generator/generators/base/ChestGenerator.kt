@@ -7,6 +7,9 @@ import generator.generators.ItemsGenerator
 import generator.generators.InfoGenerator
 import generator.info.ChestInfo
 
+/**
+ * Generator for chest.
+ */
 class ChestGenerator(
     private val idGenerator: IdGenerator,
     private val position: Position,
