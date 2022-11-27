@@ -9,10 +9,13 @@ class CharacteristicGenerator(
     private val attackGenerator: AbstractNumberGenerator,
     private val protectionGenerator: AbstractNumberGenerator,
 ) : Generator<Characteristics> {
-    override fun generate(): Characteristics =
-        Characteristics(
-            healthGenerator.generate().number,
+    override fun generate(): Characteristics {
+        val health = healthGenerator.generate().number
+        return Characteristics(
+            health,
             attackGenerator.generate().number,
             protectionGenerator.generate().number,
+            health
         )
+    }
 }

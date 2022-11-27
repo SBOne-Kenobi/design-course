@@ -71,6 +71,7 @@ class User(
 
     private fun applyBonuses(item: AbstractEquipment) {
         characteristics.healthPoints += item.healthPointsBonus
+        characteristics.maxHealthPoints += item.healthPointsBonus
         characteristics.attackPoints += item.attackPointsBonus
         characteristics.protectionPoints += item.protectionPointsBonus
     }
@@ -78,6 +79,7 @@ class User(
     private fun undoBonuses(item: AbstractEquipment) {
         characteristics.healthPoints =
             (characteristics.healthPoints - item.healthPointsBonus).coerceAtLeast(1)
+        characteristics.maxHealthPoints -= item.healthPointsBonus
         characteristics.attackPoints -= item.attackPointsBonus
         characteristics.protectionPoints -= item.protectionPointsBonus
     }

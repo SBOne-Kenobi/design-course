@@ -1,5 +1,7 @@
 package ui
 
+import com.varabyte.kotter.foundation.render.offscreen
+import com.varabyte.kotter.foundation.text.text
 import com.varabyte.kotter.foundation.text.textLine
 import com.varabyte.kotter.runtime.render.RenderScope
 import com.varabyte.kotterx.decorations.BorderCharacters
@@ -67,9 +69,36 @@ class GameRenderer(private val navigationContext: NavigationContext) : ConsoleRe
 
         levelRenderer.render(data.currentLevel)
 
-        bordered(BorderCharacters.ASCII) {
-            gameMapArray.forEach {
-                textLine(String(it))
+        val mapBuf = offscreen {
+            bordered(BorderCharacters.ASCII) {
+                gameMapArray.forEach {
+                    textLine(String(it))
+                }
+            }
+        }
+
+        val characteristicsRenderer = CharacteristicsRenderer()
+
+        val characteristicsBuf = offscreen {
+            characteristicsRenderer.run {
+                renderData(data.user.characteristics)
+            }
+        }
+
+        val mapRend = mapBuf.createRenderer()
+        val charRend = characteristicsBuf.createRenderer()
+
+        while (true) {
+            var success = false
+            success = mapRend.renderNextRow() || success
+            if (!success) {
+                text(" ".repeat(Settings.gameMapViewWidth))
+            }
+            text(" ".repeat(2))
+            success = charRend.renderNextRow() || success
+            textLine()
+            if (!success) {
+                break
             }
         }
     }
