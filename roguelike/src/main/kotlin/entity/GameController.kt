@@ -8,13 +8,22 @@ import controls.UserKeyEvent
 import engine.GameEngine
 import entity.models.User
 
+/**
+ * Class that contains and controls the state of the game.
+ */
 class GameController(
     private val map: GameMap,
     val engine: GameEngine
 ) : UserEventListener {
 
+    /**
+     * Current state.
+     */
     var state: GameState = GameState.Default
 
+    /**
+     * Current level.
+     */
     var currentLevel: Level = map.levels.first()
         private set
 
@@ -22,6 +31,9 @@ class GameController(
         engine.loadScene(currentLevel.scene)
     }
 
+    /**
+     * Get [User] of the game.
+     */
     val user: User =
         currentLevel.entities.first { it is User } as User
 
@@ -29,6 +41,9 @@ class GameController(
         user.gameController = this
     }
 
+    /**
+     * Next loop of the game.
+     */
     fun tick() {
         // TODO: move handling user events here
         if (!state.isPaused) {
@@ -38,18 +53,27 @@ class GameController(
         }
     }
 
+    /**
+     * Load next level.
+     */
     fun loadNextLevel(): Boolean =
         map.getNextLevel(currentLevel)?.let {
             currentLevel = it
             true
         } ?: false
 
+    /**
+     * Load previous level.
+     */
     fun loadPrevLevel(): Boolean =
         map.getPrevLevel(currentLevel)?.let {
             currentLevel = it
             true
         } ?: false
 
+    /**
+     * Change the game state to opened or closed the user's inventory.
+     */
     fun openOrCloseInventory() {
         state = when (state) {
             GameState.Default -> GameState.Inventory
@@ -58,10 +82,18 @@ class GameController(
         }
     }
 
+    /**
+     * Change the game state to user's death.
+     */
     fun userDeath() {
         state = GameState.Death
     }
 
+    /**
+     * When Q key pressed - open or close the user's inventory.
+     *
+     * Esc - just change the game state for dev mode.
+     */
     override fun onEvent(event: UserEvent) {
         when (event) {
             is UserKeyEvent -> {

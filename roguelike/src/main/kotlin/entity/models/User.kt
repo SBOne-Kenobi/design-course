@@ -12,6 +12,10 @@ import generator.Characteristics
 import inventory.UserInventory
 import inventory.items.equipments.AbstractEquipment
 
+
+/**
+ * User's class.
+ */
 class User(
     gameObject: GameObject,
     characteristics: Characteristics,
@@ -19,6 +23,9 @@ class User(
 ) : EntityWithCharacteristics(gameObject, characteristics), UserEventListener {
     lateinit var gameController: GameController
 
+    /**
+     * The user's inventory.
+     */
     val inventory: UserInventory = UserInventory()
 
     private fun interactWith(entity: Entity): Boolean =
@@ -34,6 +41,9 @@ class User(
             else -> false
         }
 
+    /**
+     * Put on equipment [item] from the user's storage and apply bonuses from it.
+     */
     fun putOnEquipment(item: AbstractEquipment) {
         if (inventory.storage.removeItem(item)) {
             val prevItem = inventory.equipment.addItem(item)
@@ -49,6 +59,9 @@ class User(
         }
     }
 
+    /**
+     * Take off [item] and undo bonuses from it.
+     */
     fun takeOffEquipment(item: AbstractEquipment): Boolean =
         inventory.equipment.removeItem(item).also {
             if (it) {
@@ -57,6 +70,9 @@ class User(
             }
         }
 
+    /**
+     * Create new item from items in the user's magic pot.
+     */
     fun createFromMagicPot(): Boolean {
         val recipe = inventory.run {
             grimoire.getMatchRecipe(pot.getItemsList().associateWith {

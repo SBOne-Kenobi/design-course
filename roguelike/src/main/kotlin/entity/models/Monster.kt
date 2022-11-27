@@ -5,6 +5,9 @@ import generator.Characteristics
 import generator.MonsterType
 import inventory.containers.DefaultContainer
 
+/**
+ * Class that represents monster with [type].
+ */
 class Monster(
     gameObject: GameObject,
     characteristics: Characteristics,
