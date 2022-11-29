@@ -1,12 +1,16 @@
 package generator.generators.levels
 
 import engine.Position
+import generator.MonsterType
+import generator.PassiveMonsterType
 import generator.generators.AbstractLevelGenerator
+import generator.generators.AbstractMonsterTypeGenerator
 import generator.generators.GenerateItemInfo
 import generator.generators.ItemsGenerator
 import generator.generators.base.CharacteristicGenerator
 import generator.generators.base.ChestGenerator
 import generator.generators.base.IdGenerator
+import generator.generators.base.MonsterGenerator
 import generator.generators.base.UniformNumberGenerator
 import generator.generators.base.UserGenerator
 import inventory.items.ItemWithAmount
@@ -45,7 +49,6 @@ class SimpleLevel : AbstractLevelGenerator(
                 ),
                 listOf(
                     GenerateItemInfo(Water, 5, 15),
-                    GenerateItemInfo(Magma, 2, 10),
                 ),
                 UniformNumberGenerator(random = random)
             )
@@ -54,6 +57,21 @@ class SimpleLevel : AbstractLevelGenerator(
     }
 
     override fun addMonsters() {
+        val monsterGenerator = MonsterGenerator(
+            idGenerator,
+            Position(10, 6),
+            ItemsGenerator(
+                listOf(),
+                listOf(GenerateItemInfo(Magma, 2, 10)),
+                UniformNumberGenerator(random = random)
+            ),
+            object : AbstractMonsterTypeGenerator() {
+                override fun generate(): MonsterType {
+                    return PassiveMonsterType()
+                }
+            }
+        )
+        info.add(monsterGenerator.generate())
     }
 
     override fun addAdditional() {

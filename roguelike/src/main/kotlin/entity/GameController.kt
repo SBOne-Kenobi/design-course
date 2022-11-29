@@ -12,9 +12,11 @@ import entity.models.User
  * Class that contains and controls the state of the game.
  */
 class GameController(
-    private val map: GameMap,
-    val engine: GameEngine
+    val engine: GameEngine,
+    mapInit: GameController.() -> GameMap,
 ) : UserEventListener {
+
+    private val map: GameMap = mapInit(this)
 
     /**
      * Current state.
@@ -36,10 +38,6 @@ class GameController(
      */
     val user: User =
         currentLevel.entities.first { it is User } as User
-
-    init {
-        user.gameController = this
-    }
 
     /**
      * Next loop of the game.

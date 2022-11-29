@@ -9,6 +9,7 @@ import controls.UserEventController
 import engine.GameEngine
 import entity.GameController
 import entity.GameMap
+import entity.models.monsters.MonsterStrategyFactory
 import generator.generators.base.MapGenerator
 import java.awt.Frame
 import kotlinx.coroutines.coroutineScope
@@ -66,16 +67,17 @@ class GameLauncher : AutoCloseable {
         initListeners()
     }
 
-    private fun generateMap(): GameMap {
+    private fun GameController.generateMap(): GameMap {
         val generator = MapGenerator()
         val mapInfo = generator.generate()
-        val translator = InfoTranslator(engine)
+        val translator = InfoTranslator(engine, this, MonsterStrategyFactory())
         return translator.translate(mapInfo)
     }
 
     private fun createGame(): GameController {
-        val map = generateMap()
-        return GameController(map, engine)
+        return GameController(engine) {
+            generateMap()
+        }
     }
 
     private fun initListeners() {

@@ -19,16 +19,16 @@ import inventory.items.equipments.AbstractEquipment
 class User(
     gameObject: GameObject,
     characteristics: Characteristics,
-    private val engine: GameEngine
-) : EntityWithCharacteristics(gameObject, characteristics), UserEventListener {
-    lateinit var gameController: GameController
+    override val engine: GameEngine,
+    override val gameController: GameController,
+) : MovableEntity(gameObject, characteristics), UserEventListener {
 
     /**
      * The user's inventory.
      */
     val inventory: UserInventory = UserInventory()
 
-    private fun interactWith(entity: Entity): Boolean =
+    override fun interactWith(entity: Entity): Boolean =
         when (entity) {
             is Chest -> {
                 entity.items.getItemsList().forEach { item ->
@@ -36,6 +36,14 @@ class User(
                 }
                 gameController.currentLevel.removeEntity(entity.id)
                 true
+            }
+            is Monster -> entity.reduceHealth(characteristics.attackPoints).also { killed ->
+                if (killed) {
+                    entity.items.getItemsList().forEach { item ->
+                        val amount = entity.items.getItemAmount(item)
+                        inventory.storage.addItem(item, amount)
+                    }
+                }
             }
 
             else -> false
@@ -111,15 +119,7 @@ class User(
                     else -> return
                 }
                 val newPosition = gameObject.position + diff
-                val objects = engine.getObjectsWithPosition(gameObject, newPosition)
-                val canMove = objects.fold(true) { acc, obj ->
-                    val entity = gameController.currentLevel.findEntity(obj.id)
-                    val interact = entity?.let { interactWith(it) } ?: true
-                    acc && interact
-                }
-                if (canMove) {
-                    engine.moveObject(gameObject, newPosition)
-                }
+                moveTo(newPosition)
             }
         }
     }

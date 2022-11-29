@@ -8,5 +8,5 @@ data class Characteristics(
     var attackPoints: Int,
     var protectionPoints: Int,
 
-    var maxHealthPoints: Int,
+    var maxHealthPoints: Int = healthPoints,
 )

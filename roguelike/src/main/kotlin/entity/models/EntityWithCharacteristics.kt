@@ -19,10 +19,12 @@ abstract class EntityWithCharacteristics(
     /**
      * Recalculate entity's heath with given [damage].
      */
-    fun reduceHealth(damage: Int) {
+    fun reduceHealth(damage: Int): Boolean {
         characteristics.healthPoints -= (damage - characteristics.protectionPoints).coerceAtLeast(0)
         if (characteristics.healthPoints <= 0) {
             onDeath()
+            return true
         }
+        return false
     }
 }

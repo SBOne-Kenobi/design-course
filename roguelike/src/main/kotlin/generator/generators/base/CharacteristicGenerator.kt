@@ -18,7 +18,6 @@ class CharacteristicGenerator(
             health,
             attackGenerator.generate(),
             protectionGenerator.generate(),
-            health
         )
     }
 }

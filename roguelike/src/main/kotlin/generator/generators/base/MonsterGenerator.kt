@@ -14,14 +14,16 @@ import generator.info.MonsterInfo
 class MonsterGenerator(
     private val idGenerator: IdGenerator,
     private val position: Position,
-    private val characteristicGenerator: CharacteristicGenerator,
     private val itemsGenerator: ItemsGenerator,
     private val monsterTypeGenerator: AbstractMonsterTypeGenerator,
 ) : InfoGenerator<MonsterInfo> {
-    override fun generate() = MonsterInfo(
-        monsterTypeGenerator.generate(),
-        GameObject(idGenerator.generate(), position, RectShape()),
-        characteristicGenerator.generate(),
-        itemsGenerator.generate(),
-    )
+    override fun generate(): MonsterInfo {
+        val type = monsterTypeGenerator.generate()
+        return MonsterInfo(
+            type,
+            GameObject(idGenerator.generate(), position, RectShape()),
+            type.initCharacteristics,
+            itemsGenerator.generate(),
+        )
+    }
 }
