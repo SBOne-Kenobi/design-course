@@ -190,3 +190,62 @@
 ![GameLauncher diagram](../documents/Roguelike.GameLauncher.svg)
 
 Инициализирует все компоненты, необходимые для работы игры, генерирует карту и запускает саму игру, вызывая в цикле метод `tick()`, а затем отрисовывает сцену заново.
+
+Основной пайплайн:
+
+```mermaid
+
+sequenceDiagram
+    participant gl as GameLauncher
+    participant gr as GameRenderer
+    participant gc as GameController
+    participant eg as Engine
+    participant mg as MapGenerator
+    
+    gl ->>+ mg: generate
+    mg -->>- gl: GameMapInfo
+    
+    Note over gl: Translate Infos into Entities
+    
+    loop Main game loop
+        gl ->>+ gc: tick
+        gc -> eg: objects control
+        gc -->- gl: end
+        gl ->>+ gr: render
+        gr ->>  gc: get entities
+        gc -->>  gr: Entity[]
+        gr -->- gl: end
+    end
+    
+    break
+        Note over gl: Interrupt by User
+    end
+
+```
+
+Взаимодействие с пользователем:
+```mermaid
+
+sequenceDiagram
+    actor player as Player
+    participant gen as UserEventGenerator
+    participant uec as UserEventController
+    participant gc as GameController
+    participant nc as NavigationContext
+    participant user as User
+
+    player ->> gen: Key event
+    
+    par
+        gen ->> uec: send user's events
+    end
+    
+    par
+        uec ->> gc: notify
+        uec ->> nc: notify
+        uec ->> user: notify
+        
+        Note over gc,user: onEvent
+    end
+
+```
