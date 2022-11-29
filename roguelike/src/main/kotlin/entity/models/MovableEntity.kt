@@ -4,6 +4,7 @@ import engine.GameEngine
 import engine.GameObject
 import engine.Position
 import entity.GameController
+import entity.models.interaction.InteractionStrategy
 import generator.Characteristics
 
 
@@ -15,12 +16,9 @@ abstract class MovableEntity(
     characteristics: Characteristics
 ) : EntityWithCharacteristics(gameObject, characteristics) {
 
-    protected abstract val engine: GameEngine
-    protected abstract val gameController: GameController
-
-    protected open fun interactWith(entity: Entity): Boolean {
-        return false
-    }
+    abstract val engine: GameEngine
+    abstract val gameController: GameController
+    protected abstract val interaction: InteractionStrategy
 
     /**
      * Try to move to [position] and interact if it's necessary.
@@ -29,7 +27,7 @@ abstract class MovableEntity(
         val objects = engine.getObjectsWithPosition(gameObject, position)
         val canMove = objects.fold(true) { acc, obj ->
             val entity = gameController.currentLevel.findEntity(obj.id)
-            val interact = entity?.let { interactWith(it) } ?: true
+            val interact = entity?.let { interaction.interactWith(it) } ?: true
             acc && interact
         }
         if (canMove) {

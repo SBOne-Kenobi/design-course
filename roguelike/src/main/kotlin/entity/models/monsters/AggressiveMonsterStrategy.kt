@@ -12,18 +12,11 @@ class AggressiveMonsterStrategy(
     private val attackController = TimeController(300)
     private val moveController = TimeController(500)
 
-    private fun getPossibleMoves(position: Position) = listOf(
-        position + Position(1, 0),
-        position + Position(-1, 0),
-        position + Position(0, 1),
-        position + Position(0, -1),
-    )
-
     override fun chooseNextPosition(block: (Position) -> Boolean) {
         val userPosition = gameController.user.gameObject.position
         val currentPosition = gameObject.position
 
-        val nextPosition = getPossibleMoves(currentPosition)
+        val nextPosition = currentPosition.getNeighbours()
             .shuffled()
             .minBy { (it - userPosition).length }
         val can = if (nextPosition == userPosition) {

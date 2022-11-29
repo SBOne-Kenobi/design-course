@@ -4,6 +4,7 @@ import engine.Position
 import generator.AggressiveMonsterType
 import generator.CowardlyMonsterType
 import generator.MonsterType
+import generator.PassiveMonsterType
 import generator.generators.AbstractLevelGenerator
 import generator.generators.AbstractMonsterTypeGenerator
 import generator.generators.GenerateItemInfo
@@ -58,7 +59,7 @@ class SimpleLevel : AbstractLevelGenerator(
     }
 
     override fun addMonsters() {
-        val monsterGenerator = MonsterGenerator(
+        var monsterGenerator = MonsterGenerator(
             idGenerator,
             Position(10, 6),
             ItemsGenerator(
@@ -73,6 +74,39 @@ class SimpleLevel : AbstractLevelGenerator(
             }
         )
         info.add(monsterGenerator.generate())
+
+        monsterGenerator = MonsterGenerator(
+            idGenerator,
+            Position(12, 6),
+            ItemsGenerator(
+                listOf(),
+                listOf(GenerateItemInfo(Magma, 2, 10)),
+                UniformNumberGenerator(random = random)
+            ),
+            object : AbstractMonsterTypeGenerator() {
+                override fun generate(): MonsterType {
+                    return AggressiveMonsterType()
+                }
+            }
+        )
+        info.add(monsterGenerator.generate())
+
+
+        monsterGenerator = MonsterGenerator(
+            idGenerator,
+            Position(11, 8),
+            ItemsGenerator(
+                listOf(),
+                listOf(GenerateItemInfo(Magma, 2, 10)),
+                UniformNumberGenerator(random = random)
+            ),
+            object : AbstractMonsterTypeGenerator() {
+                override fun generate(): MonsterType {
+                    return PassiveMonsterType()
+                }
+            }
+        )
+        info.add(monsterGenerator.generate())
     }
 
     override fun addAdditional() {
@@ -80,9 +114,9 @@ class SimpleLevel : AbstractLevelGenerator(
             idGenerator,
             Position(2, 2),
             CharacteristicGenerator(
-                UniformNumberGenerator(10, 50, random),
-                UniformNumberGenerator(10, 50, random),
-                UniformNumberGenerator(10, 50, random),
+                UniformNumberGenerator(30, 50, random),
+                UniformNumberGenerator(30, 50, random),
+                UniformNumberGenerator(30, 50, random),
             ),
             ItemsGenerator(listOf(
                 ItemWithAmount(Gloves, 1),

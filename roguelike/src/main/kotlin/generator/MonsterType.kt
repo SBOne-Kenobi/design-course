@@ -18,7 +18,7 @@ class PassiveMonsterType : MonsterType {
         protectionPoints = 0,
     )
 
-    override val experiencePoints: Int = 10
+    override val experiencePoints: Int = 20
 }
 
 class AggressiveMonsterType : MonsterType {
@@ -42,5 +42,5 @@ class CowardlyMonsterType : MonsterType {
         protectionPoints = 0,
     )
 
-    override val experiencePoints: Int = 30
+    override val experiencePoints: Int = 40
 }

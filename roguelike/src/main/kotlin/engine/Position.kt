@@ -10,6 +10,13 @@ data class Position(val x: Int, val y: Int) {
     val length: Int
         get() = abs(x) + abs(y)
 
+    fun getNeighbours() = listOf(
+        this + Position(1, 0),
+        this + Position(-1, 0),
+        this + Position(0, 1),
+        this + Position(0, -1),
+    )
+
     operator fun plus(other: Position): Position =
         Position(x + other.x, y + other.y)
 

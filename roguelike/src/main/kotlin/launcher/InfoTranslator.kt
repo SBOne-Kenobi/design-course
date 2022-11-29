@@ -10,6 +10,9 @@ import entity.models.Entity
 import entity.models.Monster
 import entity.models.User
 import entity.models.Wall
+import entity.models.interaction.BashInteractionDecorator
+import entity.models.interaction.InteractionStrategy
+import entity.models.interaction.UserInteraction
 import entity.models.monsters.MonsterStrategyFactory
 import generator.info.ChestInfo
 import generator.info.GameMapInfo
@@ -25,9 +28,9 @@ import inventory.grimoire.ItemRecipe
  * Class that creates entities from generation info.
  */
 class InfoTranslator(
-   private val engine: GameEngine,
-   private val gameController: GameController,
-   private val monsterStrategyFactory: MonsterStrategyFactory,
+    private val engine: GameEngine,
+    private val gameController: GameController,
+    private val monsterStrategyFactory: MonsterStrategyFactory,
 ) {
 
     /**
@@ -56,7 +59,11 @@ class InfoTranslator(
     private fun translateEntity(info: GenerationInfo): Entity? = when (info) {
         is WallInfo -> Wall(info.gameObject)
         is ChestInfo -> Chest(info.gameObject, DefaultContainer(info.items))
-        is UserInfo -> User(info.gameObject, info.characteristics, engine, gameController).apply {
+        is UserInfo -> User(info.gameObject, info.characteristics, engine, gameController) {
+            var interaction: InteractionStrategy = UserInteraction(it)
+            interaction = BashInteractionDecorator(interaction, 0.5)
+            interaction
+        }.apply {
             info.items.forEach { (item, amount) ->
                 if (item is ItemRecipe) {
                     inventory.grimoire.recipes.add(item)
@@ -65,6 +72,7 @@ class InfoTranslator(
                 }
             }
         }
+
         is MonsterInfo -> Monster(
             info.gameObject,
             info.characteristics,
@@ -74,6 +82,7 @@ class InfoTranslator(
             engine,
             gameController
         )
+
         else -> null
     }
 }

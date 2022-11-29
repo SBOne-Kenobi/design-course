@@ -9,6 +9,7 @@ import engine.GameObject
 import engine.Position
 import entity.GameController
 import entity.leveling.UserExperience
+import entity.models.interaction.InteractionStrategy
 import generator.Characteristics
 import inventory.UserInventory
 import inventory.items.equipments.AbstractEquipment
@@ -22,7 +23,10 @@ class User(
     characteristics: Characteristics,
     override val engine: GameEngine,
     override val gameController: GameController,
+    interactionBuilder: (User) -> InteractionStrategy,
 ) : MovableEntity(gameObject, characteristics), UserEventListener {
+
+    override val interaction: InteractionStrategy = interactionBuilder(this)
 
     /**
      * The user's inventory.
@@ -32,29 +36,7 @@ class User(
     /**
      * The user's experience points.
      */
-    val userExperience: UserExperience = UserExperience()
-
-    override fun interactWith(entity: Entity): Boolean =
-        when (entity) {
-            is Chest -> {
-                entity.items.getItemsList().forEach { item ->
-                    inventory.storage.addItem(item, entity.items.getItemAmount(item))
-                }
-                gameController.currentLevel.removeEntity(entity.id)
-                true
-            }
-            is Monster -> entity.reduceHealth(characteristics.attackPoints).also { killed ->
-                if (killed) {
-                    entity.items.getItemsList().forEach { item ->
-                        val amount = entity.items.getItemAmount(item)
-                        inventory.storage.addItem(item, amount)
-                    }
-                    userExperience.addExp(entity.type.experiencePoints)
-                }
-            }
-
-            else -> false
-        }
+    val userExperience: UserExperience = UserExperience(this)
 
     /**
      * Put on equipment [item] from the user's storage and apply bonuses from it.
@@ -98,6 +80,13 @@ class User(
             inventory.storage.addItem(it)
             true
         } ?: false
+    }
+
+    fun onLevelUp(bonuses: Characteristics) {
+        characteristics.healthPoints += bonuses.healthPoints
+        characteristics.maxHealthPoints += bonuses.maxHealthPoints
+        characteristics.attackPoints += bonuses.attackPoints
+        characteristics.protectionPoints += bonuses.protectionPoints
     }
 
     private fun applyBonuses(item: AbstractEquipment) {

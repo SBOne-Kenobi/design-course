@@ -3,9 +3,9 @@ package entity
 internal class TimeController(private val minEventTimeMs: Long) {
     private var lastEventTime = 0L
 
-    fun event(updateIfCan: Boolean = true): Boolean {
+    fun event(updateIfCan: Boolean = true, force: Boolean = false): Boolean {
         val current = System.currentTimeMillis()
-        if (current - lastEventTime > minEventTimeMs) {
+        if (force || current - lastEventTime > minEventTimeMs) {
             if (updateIfCan) {
                 lastEventTime = current
             }
