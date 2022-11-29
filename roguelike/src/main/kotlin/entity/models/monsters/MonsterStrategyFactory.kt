@@ -15,6 +15,6 @@ class MonsterStrategyFactory {
     ): MonsterStrategy = when (type) {
         is PassiveMonsterType -> PassiveMonsterStrategy(gameObject, gameController)
         is AggressiveMonsterType -> AggressiveMonsterStrategy(gameObject, gameController)
-        is CowardlyMonsterType -> TODO()
+        is CowardlyMonsterType -> CowardlyMonsterStrategy(gameObject, gameController)
     }
 }

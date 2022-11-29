@@ -2,6 +2,7 @@ package generator.generators.levels
 
 import engine.Position
 import generator.AggressiveMonsterType
+import generator.CowardlyMonsterType
 import generator.MonsterType
 import generator.generators.AbstractLevelGenerator
 import generator.generators.AbstractMonsterTypeGenerator
@@ -67,7 +68,7 @@ class SimpleLevel : AbstractLevelGenerator(
             ),
             object : AbstractMonsterTypeGenerator() {
                 override fun generate(): MonsterType {
-                    return AggressiveMonsterType()
+                    return CowardlyMonsterType()
                 }
             }
         )
