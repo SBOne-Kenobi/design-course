@@ -6,7 +6,6 @@ import controls.UserEventListener
 import controls.UserKeyEvent
 import engine.Position
 import entity.models.User
-import inventory.UserInventory
 import inventory.containers.MagicPot
 import inventory.containers.UserEquipment
 import inventory.containers.UserStorage

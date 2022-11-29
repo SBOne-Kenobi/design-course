@@ -2,6 +2,8 @@ package entity.models.monsters
 
 import engine.GameObject
 import entity.GameController
+import generator.AggressiveMonsterType
+import generator.CowardlyMonsterType
 import generator.MonsterType
 import generator.PassiveMonsterType
 
@@ -12,5 +14,7 @@ class MonsterStrategyFactory {
         gameController: GameController,
     ): MonsterStrategy = when (type) {
         is PassiveMonsterType -> PassiveMonsterStrategy(gameObject, gameController)
+        is AggressiveMonsterType -> AggressiveMonsterStrategy(gameObject, gameController)
+        is CowardlyMonsterType -> TODO()
     }
 }

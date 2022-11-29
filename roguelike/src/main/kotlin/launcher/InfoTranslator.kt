@@ -11,10 +11,10 @@ import entity.models.Monster
 import entity.models.User
 import entity.models.Wall
 import entity.models.monsters.MonsterStrategyFactory
-import generator.info.GameMapInfo
-import generator.info.LevelInfo
 import generator.info.ChestInfo
+import generator.info.GameMapInfo
 import generator.info.GenerationInfo
+import generator.info.LevelInfo
 import generator.info.MonsterInfo
 import generator.info.UserInfo
 import generator.info.WallInfo

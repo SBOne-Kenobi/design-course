@@ -16,3 +16,24 @@ class PassiveMonsterType : MonsterType {
         protectionPoints = 0,
     )
 }
+
+class AggressiveMonsterType: MonsterType {
+    override val description: String = "Aggressive monster"
+
+    override val initCharacteristics: Characteristics = Characteristics(
+        healthPoints = 50,
+        attackPoints = 50,
+        protectionPoints = 10,
+    )
+}
+
+class CowardlyMonsterType: MonsterType {
+    override val description: String = "Cowardly monster"
+
+    override val initCharacteristics: Characteristics = Characteristics(
+        healthPoints = 20,
+        attackPoints = 10,
+        protectionPoints = 0,
+    )
+
+}

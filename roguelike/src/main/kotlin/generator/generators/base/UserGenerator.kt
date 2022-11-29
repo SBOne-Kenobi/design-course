@@ -3,8 +3,8 @@ package generator.generators.base
 import engine.GameObject
 import engine.Position
 import engine.RectShape
-import generator.generators.ItemsGenerator
 import generator.generators.InfoGenerator
+import generator.generators.ItemsGenerator
 import generator.info.UserInfo
 
 /**

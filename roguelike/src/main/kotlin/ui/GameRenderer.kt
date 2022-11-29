@@ -15,7 +15,6 @@ import entity.GameState.Death
 import entity.GameState.Default
 import entity.GameState.Inventory
 import entity.GameState.Win
-import inventory.UserInventory
 import launcher.Settings
 import ui.entities.GameMapStorage
 import ui.entities.UserBasedViewNavigation
