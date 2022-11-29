@@ -77,10 +77,15 @@ class GameRenderer(private val navigationContext: NavigationContext) : ConsoleRe
         }
 
         val characteristicsRenderer = CharacteristicsRenderer()
+        val experienceRenderer = LevelingRenderer()
 
         val characteristicsBuf = offscreen {
             characteristicsRenderer.run {
                 renderData(data.user.characteristics)
+            }
+            textLine()
+            experienceRenderer.run {
+                renderData(data.user.userExperience)
             }
         }
 

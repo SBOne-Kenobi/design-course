@@ -8,6 +8,7 @@ import engine.GameEngine
 import engine.GameObject
 import engine.Position
 import entity.GameController
+import entity.leveling.UserExperience
 import generator.Characteristics
 import inventory.UserInventory
 import inventory.items.equipments.AbstractEquipment
@@ -28,6 +29,11 @@ class User(
      */
     val inventory: UserInventory = UserInventory()
 
+    /**
+     * The user's experience points.
+     */
+    val userExperience: UserExperience = UserExperience()
+
     override fun interactWith(entity: Entity): Boolean =
         when (entity) {
             is Chest -> {
@@ -43,6 +49,7 @@ class User(
                         val amount = entity.items.getItemAmount(item)
                         inventory.storage.addItem(item, amount)
                     }
+                    userExperience.addExp(entity.type.experiencePoints)
                 }
             }
 

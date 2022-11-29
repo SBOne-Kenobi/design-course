@@ -7,6 +7,9 @@ import generator.CowardlyMonsterType
 import generator.MonsterType
 import generator.PassiveMonsterType
 
+/**
+ * Factory of a monster's strategy.
+ */
 class MonsterStrategyFactory {
     fun getStrategy(
         type: MonsterType,
