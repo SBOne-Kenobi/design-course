@@ -68,8 +68,11 @@ class GameLauncher : AutoCloseable {
     }
 
     private fun GameController.generateMap(): GameMap {
-        val generator = MapGenerator()
-        val mapInfo = generator.generate()
+        val mapInfo = MapGenerator()
+            .setHeight(15)
+            .setWidth(20)
+            .setMonsterStyle(Settings.monsterStyle)
+            .generate()
         val translator = InfoTranslator(engine, this, MonsterStrategyFactory())
         return translator.translate(mapInfo)
     }

@@ -7,6 +7,7 @@ import entity.TimeController
 import entity.models.interaction.InteractionStrategy
 import entity.models.monsters.MonsterStrategy
 import generator.Characteristics
+import generator.MonsterStyle
 import generator.MonsterType
 import inventory.containers.DefaultContainer
 
@@ -16,8 +17,10 @@ import inventory.containers.DefaultContainer
 class Monster(
     gameObject: GameObject,
     characteristics: Characteristics,
+    val name: String,
     val items: DefaultContainer,
     val type: MonsterType,
+    val style: MonsterStyle,
     val strategy: MonsterStrategy,
     override val engine: GameEngine,
     override val gameController: GameController,

@@ -9,7 +9,7 @@ sealed interface MonsterType {
     val experiencePoints: Int
 }
 
-class PassiveMonsterType : MonsterType {
+object PassiveMonsterType : MonsterType {
     override val description: String = "Passive monster"
 
     override val initCharacteristics: Characteristics = Characteristics(
@@ -21,7 +21,7 @@ class PassiveMonsterType : MonsterType {
     override val experiencePoints: Int = 20
 }
 
-class AggressiveMonsterType : MonsterType {
+object AggressiveMonsterType : MonsterType {
     override val description: String = "Aggressive monster"
 
     override val initCharacteristics: Characteristics = Characteristics(
@@ -33,7 +33,7 @@ class AggressiveMonsterType : MonsterType {
     override val experiencePoints: Int = 50
 }
 
-class CowardlyMonsterType : MonsterType {
+object CowardlyMonsterType : MonsterType {
     override val description: String = "Cowardly monster"
 
     override val initCharacteristics: Characteristics = Characteristics(

@@ -61,7 +61,9 @@ class InfoTranslator(
         is ChestInfo -> Chest(info.gameObject, DefaultContainer(info.items))
         is UserInfo -> User(info.gameObject, info.characteristics, engine, gameController) {
             var interaction: InteractionStrategy = UserInteraction(it)
-            interaction = BashInteractionDecorator(interaction, 0.5)
+            if (Settings.useBash) {
+                interaction = BashInteractionDecorator(interaction, 0.5)
+            }
             interaction
         }.apply {
             info.items.forEach { (item, amount) ->
@@ -76,8 +78,10 @@ class InfoTranslator(
         is MonsterInfo -> Monster(
             info.gameObject,
             info.characteristics,
+            info.name,
             DefaultContainer(info.items),
             info.type,
+            info.style,
             monsterStrategyFactory.getStrategy(info.type, info.gameObject, gameController),
             engine,
             gameController

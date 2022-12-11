@@ -15,6 +15,7 @@ import generator.generators.base.IdGenerator
 import generator.generators.base.MonsterGenerator
 import generator.generators.base.UniformNumberGenerator
 import generator.generators.base.UserGenerator
+import generator.styles.AbstractMonsterInfoFactory
 import inventory.items.ItemWithAmount
 import inventory.items.equipments.arms.Gloves
 import inventory.items.equipments.head.Helmet
@@ -27,11 +28,15 @@ import kotlin.random.Random
 /**
  * Very simple level generator with one obstacle, one chest and one player.
  */
-class SimpleLevel : AbstractLevelGenerator(
+class SimpleLevel(
+    width: Int = 20,
+    height: Int = 15,
+    private val monsterInfoFactory: AbstractMonsterInfoFactory,
+) : AbstractLevelGenerator(
     name = "Simple level",
     description = "Simple level with one chest",
-    width = 20,
-    height = 15,
+    width = width,
+    height = height,
     idGenerator = IdGenerator(),
 ) {
     private val random = Random(42)
@@ -69,9 +74,10 @@ class SimpleLevel : AbstractLevelGenerator(
             ),
             object : AbstractMonsterTypeGenerator() {
                 override fun generate(): MonsterType {
-                    return CowardlyMonsterType()
+                    return CowardlyMonsterType
                 }
-            }
+            },
+            monsterInfoFactory
         )
         info.add(monsterGenerator.generate())
 
@@ -85,9 +91,10 @@ class SimpleLevel : AbstractLevelGenerator(
             ),
             object : AbstractMonsterTypeGenerator() {
                 override fun generate(): MonsterType {
-                    return AggressiveMonsterType()
+                    return AggressiveMonsterType
                 }
-            }
+            },
+            monsterInfoFactory
         )
         info.add(monsterGenerator.generate())
 
@@ -102,9 +109,10 @@ class SimpleLevel : AbstractLevelGenerator(
             ),
             object : AbstractMonsterTypeGenerator() {
                 override fun generate(): MonsterType {
-                    return PassiveMonsterType()
+                    return PassiveMonsterType
                 }
-            }
+            },
+            monsterInfoFactory
         )
         info.add(monsterGenerator.generate())
     }
