@@ -5,7 +5,7 @@ import kotlin.math.abs
 /**
  * This class represents any position.
  */
-data class Position(val x: Int, val y: Int) {
+data class Position(val x: Int, val y: Int) : Prototype<Position> {
 
     val length: Int
         get() = abs(x) + abs(y)
@@ -25,4 +25,7 @@ data class Position(val x: Int, val y: Int) {
 
     operator fun unaryMinus(): Position =
         Position(-x, -y)
+
+    override fun clone(): Position =
+        copy()
 }

@@ -44,3 +44,12 @@ object CowardlyMonsterType : MonsterType {
 
     override val experiencePoints: Int = 40
 }
+
+class ReplicableMonsterType(val baseType: MonsterType) : MonsterType {
+    override val description: String = "${baseType.description} (replicable)"
+
+    override val initCharacteristics: Characteristics = baseType.initCharacteristics
+
+    override val experiencePoints: Int = baseType.experiencePoints * 3 / 2
+
+}

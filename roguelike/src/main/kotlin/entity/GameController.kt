@@ -6,6 +6,7 @@ import controls.UserEvent
 import controls.UserEventListener
 import controls.UserKeyEvent
 import engine.GameEngine
+import entity.models.Monster
 import entity.models.User
 
 /**
@@ -43,13 +44,18 @@ class GameController(
      * Next loop of the game.
      */
     fun tick() {
-        // TODO: move handling user events here
+        if (!hasMonsters()) {
+            state = GameState.Win
+        }
         if (!state.isPaused) {
             currentLevel.entities.forEach {
                 it.tick()
             }
         }
     }
+
+    private fun hasMonsters(): Boolean =
+        currentLevel.entities.any { it is Monster }
 
     /**
      * Load next level.
@@ -99,12 +105,12 @@ class GameController(
                     when (event.key) {
                         Key.Q -> openOrCloseInventory()
                         Key.Esc -> {
-                            state = when (state) {
-                                GameState.Default -> GameState.Inventory
-                                GameState.Inventory -> GameState.Death
-                                GameState.Death -> GameState.Win
-                                GameState.Win -> GameState.Default
-                            }
+//                            state = when (state) {
+//                                GameState.Default -> GameState.Inventory
+//                                GameState.Inventory -> GameState.Death
+//                                GameState.Death -> GameState.Win
+//                                GameState.Win -> GameState.Default
+//                            }
                         }
 
                         else -> {}

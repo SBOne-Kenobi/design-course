@@ -2,6 +2,7 @@ package entity.models
 
 import engine.GameEngine
 import engine.GameObject
+import engine.Prototype
 import entity.GameController
 import entity.TimeController
 import entity.models.interaction.InteractionStrategy
@@ -21,10 +22,10 @@ class Monster(
     val items: DefaultContainer,
     val type: MonsterType,
     val style: MonsterStyle,
-    val strategy: MonsterStrategy,
+    private val strategy: MonsterStrategy,
     override val engine: GameEngine,
     override val gameController: GameController,
-) : MovableEntity(gameObject, characteristics), InteractionStrategy {
+) : MovableEntity(gameObject, characteristics), InteractionStrategy, Prototype<Monster> {
 
     private val bashController = TimeController(2500)
 
@@ -33,10 +34,15 @@ class Monster(
         else -> false
     }
 
+    fun isBashed(): Boolean =
+        !bashController.event(updateIfCan = false)
+
     override fun tick() {
-        if (bashController.event(updateIfCan = false)) {
-            strategy.chooseNextPosition { newPosition ->
-                moveTo(newPosition)
+        if (!strategy.cloneStage(this)) {
+            if (!isBashed()) {
+                strategy.chooseNextPosition(this) { newPosition ->
+                    moveTo(newPosition)
+                }
             }
         }
     }
@@ -54,4 +60,19 @@ class Monster(
     override fun onDeath() {
         gameController.currentLevel.removeEntity(gameObject.id)
     }
+
+    private constructor(other: Monster): this(
+        other.engine.currentScene.cloneGameObject(other.gameObject),
+        other.characteristics.clone(),
+        other.name,
+        DefaultContainer(),
+        other.type,
+        other.style,
+        other.strategy.clone(),
+        other.engine,
+        other.gameController
+    )
+
+    override fun clone(): Monster =
+        Monster(this)
 }

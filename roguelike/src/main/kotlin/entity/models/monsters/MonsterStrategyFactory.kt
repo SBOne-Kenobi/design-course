@@ -1,11 +1,11 @@
 package entity.models.monsters
 
-import engine.GameObject
 import entity.GameController
 import generator.AggressiveMonsterType
 import generator.CowardlyMonsterType
 import generator.MonsterType
 import generator.PassiveMonsterType
+import generator.ReplicableMonsterType
 
 /**
  * Factory of a monster's strategy.
@@ -13,11 +13,11 @@ import generator.PassiveMonsterType
 class MonsterStrategyFactory {
     fun getStrategy(
         type: MonsterType,
-        gameObject: GameObject,
         gameController: GameController,
     ): MonsterStrategy = when (type) {
-        is PassiveMonsterType -> PassiveMonsterStrategy(gameObject, gameController)
-        is AggressiveMonsterType -> AggressiveMonsterStrategy(gameObject, gameController)
-        is CowardlyMonsterType -> CowardlyMonsterStrategy(gameObject, gameController)
+        is PassiveMonsterType -> PassiveMonsterStrategy(gameController)
+        is AggressiveMonsterType -> AggressiveMonsterStrategy(gameController)
+        is CowardlyMonsterType -> CowardlyMonsterStrategy(gameController)
+        is ReplicableMonsterType -> ReplicableMonsterStrategy(getStrategy(type.baseType, gameController))
     }
 }

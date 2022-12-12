@@ -21,6 +21,14 @@ class Level(
         get() = entitiesIndexById.values.toList()
 
     /**
+     * Add new [entity].
+     */
+    fun addEntity(entity: Entity) {
+        entitiesIndexById[entity.id] = entity
+        scene.registerObject(entity.gameObject)
+    }
+
+    /**
      * Find entity by its [objectId].
      */
     fun findEntity(objectId: Int): Entity? =

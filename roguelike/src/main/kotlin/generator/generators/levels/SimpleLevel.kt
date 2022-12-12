@@ -5,6 +5,7 @@ import generator.AggressiveMonsterType
 import generator.CowardlyMonsterType
 import generator.MonsterType
 import generator.PassiveMonsterType
+import generator.ReplicableMonsterType
 import generator.generators.AbstractLevelGenerator
 import generator.generators.AbstractMonsterTypeGenerator
 import generator.generators.GenerateItemInfo
@@ -55,7 +56,7 @@ class SimpleLevel(
                     ItemWithAmount(Sword, 2),
                 ),
                 listOf(
-                    GenerateItemInfo(Water, 5, 15),
+                    GenerateItemInfo(Water, 1, 3),
                 ),
                 UniformNumberGenerator(random = random)
             )
@@ -86,7 +87,7 @@ class SimpleLevel(
             Position(12, 6),
             ItemsGenerator(
                 listOf(),
-                listOf(GenerateItemInfo(Magma, 2, 10)),
+                listOf(GenerateItemInfo(Water, 3, 10)),
                 UniformNumberGenerator(random = random)
             ),
             object : AbstractMonsterTypeGenerator() {
@@ -109,7 +110,7 @@ class SimpleLevel(
             ),
             object : AbstractMonsterTypeGenerator() {
                 override fun generate(): MonsterType {
-                    return PassiveMonsterType
+                    return ReplicableMonsterType(PassiveMonsterType)
                 }
             },
             monsterInfoFactory

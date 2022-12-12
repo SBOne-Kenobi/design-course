@@ -82,7 +82,7 @@ class InfoTranslator(
             DefaultContainer(info.items),
             info.type,
             info.style,
-            monsterStrategyFactory.getStrategy(info.type, info.gameObject, gameController),
+            monsterStrategyFactory.getStrategy(info.type, gameController),
             engine,
             gameController
         )

@@ -6,6 +6,7 @@ import generator.Characteristics
 import generator.CowardlyMonsterType
 import generator.MonsterType
 import generator.PassiveMonsterType
+import generator.ReplicableMonsterType
 import generator.info.MonsterInfo
 import inventory.items.ItemWithAmount
 
@@ -19,6 +20,10 @@ abstract class AbstractMonsterInfoFactory {
         is AggressiveMonsterType -> createAggressive(gameObject, characteristics, items)
         is CowardlyMonsterType -> createCowardly(gameObject, characteristics, items)
         is PassiveMonsterType -> createPassive(gameObject, characteristics, items)
+        is ReplicableMonsterType -> {
+            val baseInfo = createMonsterInfo(type.baseType, gameObject, characteristics, items)
+            baseInfo.copy(type = type)
+        }
     }
 
     protected abstract fun createAggressive(

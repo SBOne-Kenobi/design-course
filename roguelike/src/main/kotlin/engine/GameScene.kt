@@ -1,10 +1,15 @@
 package engine
 
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.math.max
+
 /**
  * Container for [GameObject]s.
  */
 class GameScene {
-    private val objectsData: MutableMap<Int, GameObject> = HashMap()
+    private val objectsData: MutableMap<Int, GameObject> = ConcurrentHashMap()
+
+    private var maxId: Int = 0
 
     /**
      * Get objects in the scene.
@@ -16,6 +21,7 @@ class GameScene {
      * Add new [gameObject].
      */
     fun registerObject(gameObject: GameObject) {
+        maxId = max(maxId, gameObject.id)
         objectsData[gameObject.id] = gameObject
     }
 
@@ -30,4 +36,15 @@ class GameScene {
      */
     fun findObjectById(id: Int): GameObject? =
         objectsData[id]
+
+    private fun getFreeId(): Int =
+        maxId + 1
+
+    /**
+     * Create clone of [gameObject] and register it.
+     */
+    fun cloneGameObject(gameObject: GameObject): GameObject =
+        gameObject.clone(getFreeId()).also {
+            registerObject(it)
+        }
 }
