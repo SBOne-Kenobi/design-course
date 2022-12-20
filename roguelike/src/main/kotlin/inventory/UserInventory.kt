@@ -9,8 +9,6 @@ import inventory.grimoire.Grimoire
  * The user's inventory.
  */
 class UserInventory {
-    // TODO
-
     /**
      * The user's storage.
      */
