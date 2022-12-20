@@ -6,6 +6,7 @@ import generator.CowardlyMonsterType
 import generator.MonsterType
 import generator.PassiveMonsterType
 import generator.ReplicableMonsterType
+import generator.SmartMonsterType
 
 /**
  * Factory of a monster's strategy.
@@ -19,5 +20,6 @@ class MonsterStrategyFactory {
         is AggressiveMonsterType -> AggressiveMonsterStrategy(gameController)
         is CowardlyMonsterType -> CowardlyMonsterStrategy(gameController)
         is ReplicableMonsterType -> ReplicableMonsterStrategy(getStrategy(type.baseType, gameController))
+        is SmartMonsterType -> SmartMonsterStrategy(type.cowardlyHP, getStrategy(type.baseType, gameController), gameController)
     }
 }

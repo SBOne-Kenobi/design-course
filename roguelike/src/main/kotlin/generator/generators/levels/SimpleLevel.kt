@@ -6,6 +6,7 @@ import generator.CowardlyMonsterType
 import generator.MonsterType
 import generator.PassiveMonsterType
 import generator.ReplicableMonsterType
+import generator.SmartMonsterType
 import generator.generators.AbstractLevelGenerator
 import generator.generators.AbstractMonsterTypeGenerator
 import generator.generators.GenerateItemInfo
@@ -19,7 +20,9 @@ import generator.generators.base.UserGenerator
 import generator.styles.AbstractMonsterInfoFactory
 import inventory.items.ItemWithAmount
 import inventory.items.equipments.arms.Gloves
+import inventory.items.equipments.body.Armor
 import inventory.items.equipments.head.Helmet
+import inventory.items.equipments.legs.Boots
 import inventory.items.equipments.weapon.Sword
 import inventory.items.recipes.StoneRecipe
 import inventory.items.storage.Magma
@@ -69,8 +72,8 @@ class SimpleLevel(
             idGenerator,
             Position(10, 6),
             ItemsGenerator(
+                listOf(ItemWithAmount(Armor, 1)),
                 listOf(),
-                listOf(GenerateItemInfo(Magma, 2, 10)),
                 UniformNumberGenerator(random = random)
             ),
             object : AbstractMonsterTypeGenerator() {
@@ -99,7 +102,6 @@ class SimpleLevel(
         )
         info.add(monsterGenerator.generate())
 
-
         monsterGenerator = MonsterGenerator(
             idGenerator,
             Position(11, 8),
@@ -111,6 +113,23 @@ class SimpleLevel(
             object : AbstractMonsterTypeGenerator() {
                 override fun generate(): MonsterType {
                     return ReplicableMonsterType(PassiveMonsterType)
+                }
+            },
+            monsterInfoFactory
+        )
+        info.add(monsterGenerator.generate())
+
+        monsterGenerator = MonsterGenerator(
+            idGenerator,
+            Position(18, 13),
+            ItemsGenerator(
+                listOf(ItemWithAmount(Boots, 1)),
+                listOf(),
+                UniformNumberGenerator(random = random)
+            ),
+            object : AbstractMonsterTypeGenerator() {
+                override fun generate(): MonsterType {
+                    return SmartMonsterType(cowardlyHP = 90, PassiveMonsterType)
                 }
             },
             monsterInfoFactory
