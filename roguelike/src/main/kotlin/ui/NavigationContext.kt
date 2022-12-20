@@ -6,12 +6,12 @@ import controls.UserEventListener
 import controls.UserKeyEvent
 import engine.Position
 import entity.models.User
-import inventory.containers.MagicPot
-import inventory.containers.UserEquipment
-import inventory.containers.UserStorage
-import inventory.items.equipments.AbstractEquipment
 import kotlin.math.max
 import launcher.Settings
+import ui.commands.CreateFromMagicPotCommand
+import ui.commands.PutOnEquipmentCommand
+import ui.commands.TakeOffEquipmentCommand
+import ui.commands.TransferItemCommand
 import ui.entities.UserBasedViewNavigation
 import ui.inventory.containers.DefaultContainerWithNavigation
 import ui.inventory.containers.ManyContainersWithNavigation
@@ -33,24 +33,23 @@ class NavigationContext(private val user: User) : UserEventListener {
         if (containersNavigation == null) {
             containersNavigation = ManyContainersWithNavigation(
                 listOf(
-                    UserEquipmentWithNavigation(user.inventory.equipment),
-                    DefaultContainerWithNavigation(user.inventory.storage),
-                    DefaultContainerWithNavigation(user.inventory.pot)
+                    UserEquipmentWithNavigation(user.inventory.equipment).apply {
+                        enterCommand = TakeOffEquipmentCommand(user, this)
+                    },
+                    DefaultContainerWithNavigation(user.inventory.storage).apply {
+                        enterCommand = PutOnEquipmentCommand(user, this)
+                        spaceCommand = TransferItemCommand(user.inventory.storage, user.inventory.pot, this)
+                    },
+                    DefaultContainerWithNavigation(user.inventory.pot).apply {
+                        enterCommand = CreateFromMagicPotCommand(user)
+                        spaceCommand = TransferItemCommand(user.inventory.pot, user.inventory.storage, this)
+                    }
                 ),
                 currentContainerPosition = 1
             )
         }
         return containersNavigation!!
     }
-
-    private fun ManyContainersWithNavigation.getEquipment(): UserEquipmentWithNavigation =
-        containers[0] as UserEquipmentWithNavigation
-
-    private fun ManyContainersWithNavigation.getStorage(): DefaultContainerWithNavigation =
-        containers[1] as DefaultContainerWithNavigation
-
-    private fun ManyContainersWithNavigation.getPot(): DefaultContainerWithNavigation =
-        containers[2] as DefaultContainerWithNavigation
 
     /**
      * Get view navigation that's based on player's position.
@@ -92,52 +91,12 @@ class NavigationContext(private val user: User) : UserEventListener {
                 }
 
                 Key.Down -> {
-                    if (currentNav.container is UserEquipment) {
-                        currentNav.currentItemPosition = currentNav.currentItemPosition + 1
-                    } else {
-                        currentNav.currentItemPosition = currentNav.currentItemPosition + 1
-                    }
+                    currentNav.currentItemPosition = currentNav.currentItemPosition + 1
                 }
 
-                Key.Enter -> {
-                    when (currentNav.container) {
-                        is UserEquipment -> {
-                            currentNav.getCurrentItem()?.let {
-                                user.takeOffEquipment(it as AbstractEquipment)
-                            }
-                        }
+                Key.Enter -> currentNav.enterCommand?.execute()
 
-                        is MagicPot -> {
-                            user.createFromMagicPot()
-                        }
-
-                        is UserStorage -> {
-                            currentNav.getCurrentItem()?.let {
-                                if (it is AbstractEquipment) {
-                                    user.putOnEquipment(it)
-                                }
-                            }
-                        }
-                    }
-                }
-
-                Key.Space -> {
-                    when (currentNav.container) {
-                        is MagicPot -> {
-                            currentNav.getCurrentItem()?.let { item ->
-                                user.inventory.pot.removeItem(item)
-                                user.inventory.storage.addItem(item)
-                            }
-                        }
-
-                        is UserStorage -> {
-                            currentNav.getCurrentItem()?.let { item ->
-                                user.inventory.storage.removeItem(item)
-                                user.inventory.pot.addItem(item)
-                            }
-                        }
-                    }
-                }
+                Key.Space -> currentNav.spaceCommand?.execute()
 
                 else -> {}
             }

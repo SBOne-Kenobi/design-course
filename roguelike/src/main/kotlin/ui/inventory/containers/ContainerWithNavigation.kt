@@ -5,6 +5,7 @@ import inventory.containers.ItemsContainer
 import inventory.containers.UserEquipment
 import inventory.items.EquipmentType
 import inventory.items.Item
+import ui.commands.Command
 
 /**
  * Navigation across a container.
@@ -14,6 +15,8 @@ abstract class ContainerWithNavigation<out T : ItemsContainer, out E>(
     var isActive: Boolean = false,
     var currentItemPosition: Int = 0,
     var currentBeginPosition: Int = 0,
+    var enterCommand: Command? = null,
+    var spaceCommand: Command? = null,
 ) {
     abstract val values: List<E>
 
